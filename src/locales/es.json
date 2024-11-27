@@ -1,0 +1,268 @@
+{
+  "footer": {
+    "contact": "contacto",
+    "adress":"Cra 33a # 30-20 Bogotá D.C",
+    "phone": "(+601) 3808000 Exts. 1002, 6604, 6607, 6608",
+    "phoneLabel": "Teléfono",
+    "adressLabel": "Dirección",
+    "mailLabel": "Correo",
+    "made": "Elaborado por:",
+    "fabrica": "Fábrica de Soluciones",
+    "lider": "Lider de Fábrica",
+    "desarrolladores": "Desarrolladores"
+  },
+  "login":{
+    "title":"Iniciar Sesión",
+    "email":"Ingrese su correo institucional",
+    "password":"Ingrese su Contraseña",
+    "Terms":"Aceptar terminos y condiciones",
+    "TermRequired": " Debes aceptar los términos antes de enviar.",
+    "Forget":"¿Olvido la contraseña?",
+    "Register":"Registrase",
+    "Login":"Ingresar",
+    "home":"Inicio",
+    "formatInvalid": "Formato de correo incorrecto"
+  },
+  "main":{
+    "general":"Registro y Control",
+    "bienestar":"Bienestar",
+    "admin": "Bienestar General",
+    "gym": "Gimnasio",
+    "enfermeria": "Enfermería",
+    "agendamientoBiblioteca":"Agendamiento Biblioteca",
+    "coformacion":"Coformación",
+    "calificador":"Calificador",
+    "certificadosLaborales":"Certificados Laborales"
+  },
+  "titles": {
+    "titleGeneral": "Agendamiento", 
+    "spaces": "Espacios",
+    "typesReservations": "Servicios",
+    "reservations":"Reservaciones",
+    "services":"Tipos de Servicios",
+    "Registryservices": "Registro de Espacio",
+    "Registrycategories": "Registro de Servicio",
+    "Registryreservations":"Registro de Reservación",
+    "Registryservice":"Registro de Servicios",
+    "editservices": "Editar Espacio",
+    "editcategories": "Editar Servicio",
+    "editreservations":"Editar Reservación",
+    "editservice":"Editar Servicio",
+    "calendar":"Calendario",
+    "users": "Usuarios",
+    "profile": "Perfil",
+    "changePassword": "Cambiar contraseña",
+    "resetPassword": "Recuperar Contraseña",
+    "servicesReserv": "Servicios",
+    "spacesReserv": "Reserva espacios",
+    "professional": "Personal Biblioteca",
+    "Registryprofessional": "Registrar Profesional",
+    "editprofessional": "Editar Profesional",
+    "management": "Gestión",
+    "pdf": "Generar PDF",
+    "photo": "Cambiar foto de perfil",
+    "inscription":"Inscritos"
+  },
+  "forms":{
+    "name":"Nombre",
+    "users": "Usuario",
+    "description":"Descripción",
+    "status":{
+      "label": "Estado",
+      "enabled":"Habilitado",
+      "disabled":"Deshabilitado",
+      "canceled":"Cancelado",
+      "acepted":"Aceptado",
+      "completed":"Completado",
+      "onHold":"En espera"
+    },
+    "date":"Fecha",
+    "hour":"Hora de ejecución",
+    "hourStart":"Hora de Inicio",
+    "hourEnd": "Hora de Fin",
+    "yes":"Si",
+    "no":"No",
+    "reservedSpace":"Espacio",
+    "reservationType":"Servicios",
+    "reservationStart":"Hora de inicio",
+    "reservationEnd":"Hora de fin",
+    "professional":"Personal Biblioteca",
+    "filter": "Filtros:",
+    "spaces": "Espacios",
+    "labelpdf": "Seleccione el filtro para exportar el PDF",
+    "allReser":"Todas las reservas",
+    "activeReser":"Reservaciones activas",
+    "labelDateOPt": "Selecciona una fecha:",
+    "dateRange": "Rango de fechas",
+    "dateInitial":"Fecha Inicial",
+    "dateEnd":"Fecha Final",
+    "imagen": "Cargar imagen",
+    "quotas":"Cupos"
+  },
+  "buttons":{
+    "send":"Enviar",
+    "close":"Cerrar",
+    "cancel":"Cancelar",
+    "save":"Guardar",
+    "edit":"Editar",
+    "delete":"Borrar",
+    "search": "Buscar",
+    "add":"Agregar",
+    "previous":"Anterior",
+    "next":"Siguiente",
+    "first":"Primero",
+    "last":"Último",
+    "Registry":"Registrar",
+    "logout":"Cerrar Sesión",
+    "changePassword":"Cambiar contraseña",
+    "clearFilters":"Borrar filtros",
+    "excel": "Excel",
+    "pdf":"PDF",
+    "loading":"Enviando..."
+  },
+  "tables":{
+    "labelActive":"Reservaciones activas",
+    "labelActiveService":"Servicios activos",
+    "labelHistory":"Historial",
+    "labelCalendar":"Calendario",
+    "id":"Id",
+    "name":"Nombre",
+    "actions":"Acciones",
+    "reservationDate":"Fecha",
+    "reservationType":"Tipo de servicio",
+    "reservedSpace":"Espacio reservado",
+    "reservationStart":"Hora de inicio",
+    "reservationEnd":"Hora de fin",
+    "reservationQuotasTotal":"Total de Cupos",
+    "reservationQuotas":"Cupos Disponibles",
+    "userEmail":"Correo del usuario",
+    "state":"Estado",
+    "category":"Categoria",
+    "categoryDescription":"Descripción de la categoria",
+    "data": "No hay reservaciones",
+    "dataInscriptions": "No hay inscripciones",
+    "reservedrofessional": "Profesional",
+    "reservationService": "Servicio",
+    "inscription":"Inscritos",
+    "inscriptionDate":"Fecha de inscripción"
+},
+"calendar":{
+  "title":"Reservación"
+},
+"errors":{
+  "numberQuotas": "No se permiten números negativos",
+  "error": "Se produjo un error inesperado",
+
+  "hourActual":"La hora de incio de la reserva debe ser igual o mayor a la hora actual",
+  "spaceReserved":"Este espacio ya esta reservado",
+  "userReservatiom":"Este usuario ya tiene un espacio reservado",
+
+  "notMade":"Este usuario no puede hacer mas reservaciones",
+  "unvalidTime":"La hora debe ser superior a  y la reserva debe estar comprendida entre 30 minutos y 2 horas.'",
+  "spaceError":"Este espacio no esta disponible",
+  "unvalidTimeHour":"El espacio debe ser reservado entre las 7:00 a.m y las 7:00 p.m, o en una fecha posterior",
+  
+  "duplicateAlert":"Este nombre ya se encuentra registrado",
+  "formatInvalid":"Formato invalido",
+
+  "new":"La contraseña no coincide",
+  "pass":"La confirmación y la contraseña no coincide",
+  "passActual": "La contraseña actual no coincide con la digitada",
+  "passIqual": "La nueva contraseña no puede ser igual a la actual",
+  "changePassword":"Hubo un error al cambiar la contraseña. Por favor, inténtalo de nuevo.",
+
+  "warning": "¡Atención!",
+  "warningLabel": "Tu sesión está a punto de expirar por inactividad.",
+  "confirmLabel": "Mantener la sesión",
+
+
+  "accessDenied":"Acceso denegado, no tiene el perfil necesario para realizar esta acción.",
+  "login":"Contraseña y/o correo incorrectos",
+  "accesActive": "Tienes iniciada la sesion en otro aplicativo cierrala, he intenta nuevamente",
+  "accessDenied2":" no tiene acceso a este aplicativo",
+
+  "errorMail": "Error al enviar el correo intenta de nuevo",
+  "userMail": "Usuario no encontrado, verifique su correo",
+
+  "resetCode": "El código no coincide con el que se le envio al correo"
+
+
+},
+"profile":{
+  "img" : "Cambiar Imagen",
+  "photoAlt":"Foto de Perfil",
+  "title":"Bienvenido,",
+  "name":"Nombre institucional",
+  "email":"Correo institucional",
+  "password":"Contraseña actual",
+  "passwordConfirm":"Confirmar contraseña",
+  "changePassword":"Nueva contraseña",
+  "code": "Código de verificación",
+  "status":"Estado",
+  "expeditionDate":"Fecha de expedicion",
+  "adress":"Dirección",
+  "gender":"Género",
+  "relationship":"Estado civil",
+  "rol":"Rol",
+  "birthdate":"Fecha de nacimiento",
+  "eps":"Eps",
+  "rh":"RH",
+  "multiculturalism":"Multiculturalismo",
+  "states": {
+    "state": "Estado",
+    "active": "Activo",
+    "inactive": "In,activo"
+  },
+  "note": "Formatos aceptados: .jpeg .png .jpg y tamaño máximo de 2048KB"
+},
+"validations": { 
+  "password": {
+    "invalidFormat": "La contraseña debe tener al menos 8 caracteres, una mayúscula, un dígito y un carácter especial",
+    "notSame":"Las contraseñas no coinciden",
+    "same":"Las contraseñas coinciden"
+  },
+  "mails": {
+      "invalidFormat": "El formato de correo es inválido",
+      "institutional": "El correo debe ser institucional con sólo letras"
+    },
+"nameRequired":"Nombre Requerido",
+"nameInvalid": "Nombre debe tener entre 5 y 100 caracteres.",
+"nameProfInvalid": "Nombre debe tener entre 3 y 100 caracteres.",
+"inputRequired": "Este campo es requerido.",
+"dateBeforeInvalid":"La fecha no puede ser anterior a la fecha actual.",
+"hourAfterInvalid":"La hora de inicio no puede ser mayor que la hora de fin.",
+"hourhigherInvalid": "La hora de inicio no puede ser anterior a la hora actual.",
+"hourIqualInvalid":"La hora de inicio no puede ser igual que la hora de fin.",
+"StartTime":"Elegiste el día actual, la hora de inicio debe ser mayor que la hora actual"
+},
+"messageSuccess":{
+  "Success" : "Se registro correctamente",
+  "Update" : "Se actualizo correctamente",
+  "titleSuccess": "Reserva para el día: ",
+  "changePasswordSuccess": "La contraseña ha sido cambiada exitosamente",
+  "mailSuccess":"Se envio a tu correo un código de verificación"
+},
+"cancel": {
+  "title": "¿Estas seguro que quieres cancelar esta reservación?",
+  "text": "Esta acción no se podrá deshacer",
+  "confirmButtonText": "Cancelar reservacion",
+  "close": "Cerrar",
+  "title2": "Reserva Cancelada",
+  "text2": "Su reserva se canceló exitosamente"
+},
+"pdf": {
+  "personal": "REPORTE DE PERSONAL BIBLIOTECA",
+  "servicesTypes":"REPORTE DE TIPO DE SERVICIOS",
+  "spaces": "REPORTE DE ESPACIOS",
+  "ReservationSpaces": "REPORTE DE RESERVACIONES DE ESPACIOS",
+  "services": "REPORTE DE RESERVACIONES DE SERVICIOS",
+  "error": "No hay datos para poder exportarlos"
+},
+"excel": {
+  "personal": "Personal",
+  "servicesTypes":"Tipo_de_servicios",
+  "spaces":"Espacios",
+  "services": "Reservacion_servicios",
+  "ReservationSpaces": "Reservacion_espacios"
+}
+}

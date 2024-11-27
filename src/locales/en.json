@@ -1,0 +1,268 @@
+{
+  "footer": {
+    "contact": "contact",
+    "adress": "Cra 33a # 30-20 Bogotá D.C",
+    "phone": "(+601) 3808000 Exts. 1002, 6604, 6607, 6608",
+    "phoneLabel": "Phone",
+    "adressLabel": "Address",
+    "mailLabel": "Email",
+    "made": "Made by:",
+    "fabrica": "Solution Factory",
+    "lider": "Factory Leader",
+    "desarrolladores": "Developers"
+  },
+  "login": {
+    "title": "Log In",
+    "email": "Enter your institutional email",
+    "password": "Enter your Password",
+    "Terms": "Accept terms and conditions",
+    "TermRequired": "You must agree to the terms before submitting.",
+    "Forget": "Forgot password?",
+    "Register": "Register",
+    "Login": "Get in",
+    "home": "Home",
+    "formatInvalid": "Invalid mail format"
+  },
+  "main": {
+    "general": "Registration and Control",
+    "bienestar": "Welfare",
+    "admin": "Welfare General",
+    "gym": "Gym",
+    "enfermeria": "Nursing",
+    "agendamientoBiblioteca": "Library Scheduling",
+    "coformacion": "Coformation",
+    "calificador": "Qualifier",
+    "certificadosLaborales": "Labor Certificates"
+  },
+  "titles": {
+    "titleGeneral": "Scheduling",
+    "Registryservices": "Space Registry",
+    "Registrycategories": "Service Registry",
+    "Registryreservations": "Reservation Registry",
+    "editservices": "Edit Space",
+    "editcategories": "Edit Service",
+    "editreservations": "Edit Reservation",
+    "spaces": "Spaces",
+    "typesReservations": "Services",
+    "reservations": "Reservations",
+    "services": "Services Types",
+    "Registryservice": "Services Registry",
+    "editservice": "Edit Service",
+    "calendar": "Calendar",
+    "users": "Users",
+    "profile": "Profile",
+    "changePassword": "Change Password",
+    "resetPassword": "Password Recovery",
+    "servicesReserv": "Services",
+    "spacesReserv": "Space reservation",
+    "professional": "Library Staff",
+    "Registryprofessional": "Staff Registry",
+    "editprofessional": "Edit Staff",
+    "management": "Management",
+    "pdf": "Build PDF",
+    "photo": "Change profile photo",
+    "inscription":"enrolled"
+  },
+  "forms": {
+    "name": "Name",
+    "users": "User",
+    "description": "Description",
+    "status": {
+      "label": "Status",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "canceled": "Canceled",
+      "accepted": "Accepted",
+      "completed": "Completed",
+      "onHold": "On Hold"
+    },
+    "date": "Date",
+    "hour": "Execution Time",
+    "hourStart": "Start Time",
+    "hourEnd": "End Time",
+    "yes": "Yes",
+    "no": "No",
+    "reservedSpace": "Reserved Space",
+    "reservationType": "Services",
+    "professional":"Library Staff",
+    "reservationStart":"Start Time",
+    "reservationEnd":"End Time",
+    "filter": "Filter:",
+    "spaces": "Spaces",
+    "labelpdf": "Select the filter to export the PDF",
+    "allReser": "All reservations",
+    "activeReser": "Active reservations",
+    "labelDateOPt": "Select a date:",
+    "dateRange": "Date Range",
+    "dateInitial": "Start Date",
+    "dateEnd": "End Date",
+    "imagen": "Upload image",
+    "quotas":"Quotas"
+  },
+  "buttons": {
+    "send": "Send",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "add": "Add",
+    "previous": "Previous",
+    "next": "Next",
+    "first": "First",
+    "last": "Last",
+    "Registry": "Register",
+    "logout": "Logout",
+    "changePassword": "Change Password",
+    "clearFilters":"Clear Filters",
+    "excel": "Excel",
+    "pdf":"PDF",
+    "loading":"Sending..."
+  },
+  "tables": {
+    "labelActive": "Active reservations",
+    "labelActiveService":"Active Services",
+    "labelHistory": "History",
+    "labelCalendar": "Calendar",
+    "id": "Id",
+    "name": "Name",
+    "actions": "Actions",
+    "reservationDate": "Date",
+    "reservationType": "Service Type",
+    "reservedSpace": "Reserved Space",
+    "reservationStart": "Start Time",
+    "reservationEnd": "End Time",
+    "userEmail": "User Email",
+    "state": "State",
+    "category": "Category",
+    "categoryDescription": "Category Description",
+    "data": "No reservation made",
+    "dataInscriptions": "No enrolled made",
+    "reservedrofessional": "Library Staff",
+    "reservationService": "Service",
+    "reservationQuotasTotal":"Total Quotas",
+    "reservationQuotas":"Available Quotas",
+    "inscription":"Enrolled",
+    "inscriptionDate":"Enrolled date"
+
+
+  },
+  "calendar": {
+    "title": "Reservation"
+  },
+  "errors":{
+    "numberQuotas": "Negative numbers are not allowed",
+
+
+    "hourActual": "The start time of the reservation must be equal to or greater than the current time",
+    "spaceReserved": "This space is already reserved",
+    "userReservatiom": "This user already has a space reserved",
+
+    "notMade": "This user cannot make any more reservations",
+    "unvalidTime": "The time must be greater than and the reservation must be between 30 minutes and 2 hours.'",
+    "spaceError": "This space is not available",
+    "unvalidTimeHour": "The space must be reserved between 7:00 a.m. and 7:00 p.m., or at a later date.", 
+
+    "duplicateAlert": "This name is already registered",
+    "formatInvalid": "Invalid format",
+
+    "accessDenied": "Access denied, you do not have the required profile to perform this action",
+    "login": "Incorrect password and/or email",
+    "accesActive": "You are logged in to another application, close it, and try again",
+    "accessDenied2":" do not have access to this application",
+
+    "new": "Password does not match", 
+    "pass": "The confirmation and password do not match",
+    "passActual": "Current password does not match typed",
+    "passIqual": "The new password cannot be the same as the current password.",
+
+    "warning": "Warning!",
+    "warningLabel": "Your session is about to expire due to inactivity.",
+    "confirmLabel": "Maintain session.",
+    "changePassword":"There was an error changing the password. Please try again.",
+
+    "errorMail": "Error sending mail try again",
+    "userMail": "User not found, check your email",
+
+    "resetCode": "The code does not match the one that was sent to the email"
+  },
+  "profile": {
+    "img" : "Change photo",
+    "photoAlt":"Profile photo",
+    "title": "Welcome",
+    "name": "Name",
+    "email": "Email",
+    "password": "Current Password",
+    "passwordConfirm": "Confirm Password",
+    "changePassword": "New Password",
+    "code": "Verification code",
+    "status": "Status",
+    "expeditionDate": "Expedition Date",
+    "adress": "Address",
+    "gender": "Gender",
+    "relationship": "Civil State",
+    "rol": "Role",
+    "birthdate": "Birthdate",
+    "eps": "EPS",
+    "rh":"RH",
+    "multiculturalism": "Multiculturalism",
+    "states": {
+      "state": "EstUS",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "note": "Accepted formats: .jpeg .png .jpg and maximum size of 2048KB."
+
+  },
+  "validations": {
+    "password": {
+      "invalidFormat": "The password must contain at least 8 characters, an upper case letter, a number and a special character",
+      "notSame": "The password does not match",
+      "name": "The passwords match"
+    },
+    "mails": {
+      "invalidFormat": "The e-mail format is invalid",
+      "institutional": "The e-mail must be institutional with only letters"
+    },
+    "nameRequired": "Name Required",
+    "nameInvalid": "Name must be between 5 and 100 alphabetic characters.", 
+    "nameProfInvalid": "Name must be between 3 and 100 alphabetic characters.", 
+    "inputRequired": "This field is required.", 
+    "dateBeforeInvalid": "Date cannot be earlier than the current date.",
+    "hourAfterInvalid": "The start time cannot be greater than the end time.",
+    "hourhigherInvalid": "The start time cannot be earlier than the current time.",
+    "hourIqualInvalid": "The start time cannot be the same as the end time.", 
+    "startTime": "You chose the current day, the start time must be greater than the current time."
+  },
+  "messageSuccess":{
+    "Success" : "Successfully registered",
+    "Update" : "Successfully updated",
+    "titleSuccess" : "Reserve  for the day: ",
+    "changePasswordSuccess": "Password has been changed successfully",
+    "mailSuccess":"A verification code was sent to your email"
+  },
+  "cancel": {
+    "title": "Are you sure you want to cancel this reservation?",
+    "text": "This action cannot be undone",
+    "confirmButtonText": "Cancel reservation",
+    "close": "Close",
+    "title2": "Reservation Canceled",
+    "text2": "Your reservation has been canceled successfully"
+  },
+  "pdf": {
+    "personal": "LIBRARY STAFF REPORT",
+    "servicesTypes":"SERVICE TYPES REPORT",
+    "spaces": "SPACES REPORT",
+    "ReservationSpaces": "SPACE RESERVATIONS REPORT",
+    "services": "SERVICE RESERVATIONS REPORT",
+    "error": "There is no data to be exported"
+  },
+  "excel": {
+    "personal": "Staff_library",
+    "servicesTypes":"Service_types",
+    "spaces":"Spaces",
+    "services": "Service_reservations",
+    "ReservationSpaces": "Space_reservations"
+  }
+}
