@@ -38,15 +38,16 @@ const router = createRouter({
 
       ]
     },
+    
 
     {
       path: '/protected',
+      name:'protected',
       component: () => import('../components/layout/ProtectedAdminLayout.vue'),
       meta: {
         auth: true
       },
       children: [
-       
         {
           path: '/profile',
           name: 'byprofile',
@@ -54,7 +55,9 @@ const router = createRouter({
           meta: {
             auth: true
           }
-        },
+    },
+       
+        
         {
           path: '/spaces',
           name: 'byspaces',
@@ -92,6 +95,45 @@ const router = createRouter({
       ]
 
     },
+
+    {
+      path: '/salones',
+      name:'salones',
+      component: () => import('../components/layout/ProtectedAdminSalonesLayout.vue'),
+      meta: {
+        auth: true
+      },
+      children: [
+        {
+          path: 'profile',
+          name: 'byprofileSalones',
+          component: () => import('../views/UserProfileView.vue'),
+          meta: {
+            auth: true
+          }
+    },
+       
+       
+        {
+          path: 'spaces',
+          name: 'byspacesSalones',
+          component: () => import('../views/SpacesView.vue'),
+          meta: {
+            auth: true
+          }
+        },
+        {
+          path: 'reservations',
+          name: 'bygreservationsSalones',
+          component: () => import('../views/ReservationView.vue'),
+          meta: {
+            auth: true
+          }
+        }
+
+      ]
+
+    },
     {
       path: '/:pathMatch(.*)*',
       name: 'Notfound',
@@ -101,6 +143,8 @@ const router = createRouter({
 
   ]
 })
+
+
 router.beforeEach(async (to, from, next) => {
   const requiredAuth = to.meta.auth;
   const UserStore = useAuthStore();
@@ -109,95 +153,85 @@ router.beforeEach(async (to, from, next) => {
   const localStorageDocument = localStorage.getItem('doct');
   const localStorageToken = localStorage.getItem("Accept");
   const localStorageUser = localStorage.getItem("id");
+  const localStorageProj = localStorage.getItem("proj");
+  const secretKey = 'TuClaveSecreta';
+
   if (localStorageToken) {
     UserStore.token = localStorageToken;
   }
 
-  // Si el token está presente en el almacén de estado, permitir el acceso
   if (UserStore.token) {
-    if (UserStore.token && to.name === 'login') {
-      return next("/reservations"); // Cambiar "/projects" por la ruta a la que quieres redirigir al usuario autenticado
+    if (to.name === 'login') {
+      return next("/reservations"); // Redirigir al usuario autenticado
     }
-    const secretKey = 'TuClaveSecreta';
-    const acc_administrator = CryptoJS.AES.decrypt(localStorage.getItem('type'), secretKey).toString(CryptoJS.enc.Utf8);
 
-    // Verificar si el usuario es acc_administrator === '0'
+    // Verificar y desencriptar datos de localStorage
+    let acc_administrator = null;
+    if (localStorage.getItem('type')) {
+      try {
+        acc_administrator = CryptoJS.AES.decrypt(localStorage.getItem('type'), secretKey).toString(CryptoJS.enc.Utf8);
+      } catch (error) {
+        console.error("Error desencriptando 'type':", error);
+      }
+    }
+
     if (acc_administrator === '0') {
-      UserStore.logout(localStorageUser)
+      UserStore.logout(localStorageUser);
     } else if (acc_administrator === '1') {
-      // Si el usuario es acc_administrator === '1', tiene acceso a todas las rutas protegidas
+      let decryptedValue = null;
+      if (localStorageProj) {
+        try {
+          const decryptedBytes = CryptoJS.AES.decrypt(localStorageProj, secretKey);
+          decryptedValue = decryptedBytes.toString(CryptoJS.enc.Utf8);
+        } catch (error) {
+          console.error("Error desencriptando 'proj':", error);
+        }
+      }
+
+      // Validar acceso para usuarios con proj_id
+      if (decryptedValue) {
+        if (decryptedValue.includes(7)) {
+          // Usuario con `proj_id = 7` puede acceder a rutas que comiencen con `/salones`
+          if (!to.path.startsWith('/salones')) {
+            console.log(`Ruta ${to.path} bloqueada para proj_id = 7`);
+            return next("/salones/reservations"); // Redirigir al layout salones
+          }
+          console.log(`Acceso permitido a ${to.path} para proj_id = 7`);
+          return next();
+        } else if (decryptedValue.includes(1)) {
+
+          if (to.path.startsWith('/salones')) {
+            console.log(`Ruta ${to.path} bloqueada para proj_id =1`);
+            return next("/reservations"); // Redirigir al layout salones
+          }
+          
+          return next();
+        }
+      }
       return next();
     }
+
+    // Verificar si el usuario debe cambiar su contraseña
     if (localStoragePassword === localStorageDocument) {
       if (to.path !== '/firstPassword') {
         return next("/firstPassword");
       } else {
         return next();
       }
-    } else {
-      return next();
     }
 
+    return next();
   }
 
-
-  // Si la ruta requiere autenticación, redirigir al inicio de sesión
   if (requiredAuth) {
     return next("/");
   }
 
-  // Permitir el acceso a rutas públicas
   return next();
 });
 
-// router.beforeEach(async (to, from, next) => {
-//   const requiredAuth = to.meta.auth;
-//   const UserStore = useAuthStore();
 
-//   console.log(UserStore.project_id)
 
-//   const localStorageToken = localStorage.getItem("Accept");
-//   const localStoragePassword = localStorage.getItem('pass');
-//   const localStorageDocument = localStorage.getItem('doct');
-// //const localStorageUser = localStorage.getItem("id");
-
-//   if (localStorageToken) {
-//     UserStore.token = localStorageToken;
-//   }
-
-//   if (UserStore.token) {
-//     if (UserStore.token && to.name === 'login') {
-//       return next("/reservations");
-//     }
-
-//     const secretKey = 'TuClaveSecreta';
-//     const acc_administrator = CryptoJS.AES.decrypt(localStorage.getItem('type'), secretKey).toString(CryptoJS.enc.Utf8);
-
-//     // Acceso para administradores
-//     if (acc_administrator === '1') {
-//       return next();
-//     }
-
-//     // Validar si el usuario debe cambiar su contraseña
-//     if (localStoragePassword === localStorageDocument) {
-//       if (to.path !== '/firstPassword') {
-//         return next("/firstPassword");
-//       } else {
-//         return next();
-//       }
-//     }
-
-   
-//   }
-
-//   // Si la ruta requiere autenticación, redirigir al inicio de sesión
-//   if (requiredAuth) {
-//     return next("/");
-//   }
-
-//   // Permitir acceso a rutas públicas
-//   return next();
-// });
 
 
 export default router

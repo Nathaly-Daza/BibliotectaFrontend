@@ -33,7 +33,7 @@
       <li><hr class="dropdown-divider"></li>
       <li>
         <div class="container dropdown-item">
-          <RouterLink to="/profile" class="" >
+          <RouterLink :to="proj_id.includes('7') ? '/salones/profile' : '/profile'" class="">
             <div class="link">
               <div class="link-container dropdown-item">{{ $t("titles.profile") }}</div>
             </div>
@@ -80,6 +80,10 @@ const userAuth = useAuthStore();
 const personsStore = usePersonsStore();
 const secretKey = "TuClaveSecreta";
 const use_id = CryptoJS.AES.decrypt(localStorage.getItem("id"), secretKey).toString(
+  CryptoJS.enc.Utf8
+);
+
+const proj_id = CryptoJS.AES.decrypt(localStorage.getItem("proj"), secretKey).toString(
   CryptoJS.enc.Utf8
 );
 const profileImage = ref(personsStore.persons.use_photo);

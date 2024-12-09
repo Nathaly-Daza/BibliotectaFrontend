@@ -13,13 +13,14 @@ export const useSpaceStore = defineStore('space_name', () => {
   const secretKey = 'TuClaveSecreta';
   const user = CryptoJS.AES.decrypt(localStorage.getItem('id'), secretKey).toString(CryptoJS.enc.Utf8);
   const acc_administrator = CryptoJS.AES.decrypt(localStorage.getItem('type'), secretKey).toString(CryptoJS.enc.Utf8);
+  const proj_id = CryptoJS.AES.decrypt(localStorage.getItem('proj'), secretKey).toString(CryptoJS.enc.Utf8);
   const { t } = useI18n()
   // esta funcion se utiliza para obtener datos de las spaces
 
   const readSpace = async () => {
     try {
       const res = await axios({
-        url: `/spaces/1/${user}`,
+        url: `/spaces/${proj_id}/${user}`,
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + authStore.token
@@ -44,7 +45,7 @@ export const useSpaceStore = defineStore('space_name', () => {
     try {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token
       const res = await axios({
-        url: `/spaces/1/${user}`,
+        url: `/spaces/${proj_id}/${user}`,
         method: 'POST',
         headers: {
           Authorization: 'Bearer ' + authStore.token
@@ -79,7 +80,7 @@ export const useSpaceStore = defineStore('space_name', () => {
 
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token;
       const res = await axios({
-        url: `/spaces/1/${user}/${spa_id}`,
+        url: `/spaces/${proj_id}/${user}/${spa_id}`,
         method: 'PUT',
         headers: {
           Authorization: 'Bearer ' + authStore.token
@@ -119,7 +120,7 @@ export const useSpaceStore = defineStore('space_name', () => {
     try {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token;
       const res = await axios({
-        url: `/spaces/1/${user}/${id}`,
+        url: `/spaces/${proj_id}/${user}/${id}`,
         method: 'DELETE',
         headers: {
           Authorization: 'Bearer ' + authStore.token

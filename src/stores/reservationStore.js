@@ -18,6 +18,8 @@ export const useReservationStore = defineStore('reservation_name', () => {
   const secretKey = 'TuClaveSecreta';
   const user = CryptoJS.AES.decrypt(localStorage.getItem('id'), secretKey).toString(CryptoJS.enc.Utf8);
   const acc_administrator = parseInt(CryptoJS.AES.decrypt(localStorage.getItem('type'), secretKey).toString(CryptoJS.enc.Utf8));
+  const proj_id = CryptoJS.AES.decrypt(localStorage.getItem('proj'), secretKey).toString(CryptoJS.enc.Utf8);
+
   //const isRecurring = ref(false); // Indica si es una reserva recurrente
   //const recurrenceType = ref(''); // Diario, semanal, mensual, etc.
   //const recurrenceEndDate = ref(''); // Fecha límite de la recurrencia
@@ -26,7 +28,7 @@ export const useReservationStore = defineStore('reservation_name', () => {
   const readReservation = async () => {
     try {
       const res = await axios({
-        url: `/reservations/1/${user}`,
+        url: `/reservations/${proj_id}/${user}`,
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + authStore.token
@@ -53,7 +55,7 @@ export const useReservationStore = defineStore('reservation_name', () => {
   const readReservationUser = async () => {
     try {
       const res = await axios({
-        url: `/active/reserv/user/${user}/1/${user}`,
+        url: `/active/reserv/user/${user}/${proj_id}/${user}`,
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + authStore.token
@@ -76,7 +78,7 @@ export const useReservationStore = defineStore('reservation_name', () => {
     try {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token;
       const res = await axios({
-        url: `/calendar/1/${user}`,
+        url: `/calendar/${proj_id}/${user}`,
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + authStore.token
@@ -98,7 +100,7 @@ export const useReservationStore = defineStore('reservation_name', () => {
     try {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token;
       const res = await axios({
-        url: `/historial/1/${user}/${column}/${data}`,
+        url: `/historial/${proj_id}/${user}/${column}/${data}`,
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + authStore.token
@@ -121,7 +123,7 @@ export const useReservationStore = defineStore('reservation_name', () => {
     try {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token;
       const res = await axios({
-        url: `/historialDate/1/${user}/${DateStart}/${DateEnd}`,
+        url: `/historialDate/${proj_id}/${user}/${DateStart}/${DateEnd}`,
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + authStore.token
@@ -149,7 +151,7 @@ export const useReservationStore = defineStore('reservation_name', () => {
     //console.log(acc_administrator)
     try {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token;
-      const res = await axios.get(`/users/1/${user}`, {
+      const res = await axios.get(`/users/${proj_id}/${user}`, {
         params: {
           acc_administrator: acc_administrator
         }
@@ -217,7 +219,7 @@ export const useReservationStore = defineStore('reservation_name', () => {
         // Crear todas las reservas recurrentes
         for (const date of recurrenceDates) {
           await axios({
-            url: `/reservations/1/${user}`,
+            url: `/reservations/${proj_id}/${user}`,
             method: 'POST',
             headers: {
               Authorization: 'Bearer ' + authStore.token,
@@ -335,7 +337,7 @@ export const useReservationStore = defineStore('reservation_name', () => {
   
         for (const date of recurrenceDates) {
           await axios({
-            url: `/reservations/1/${user}/${res_id}`,
+            url: `/reservations/${proj_id}/${user}/${res_id}`,
             method: 'PUT',
             headers: {
               Authorization: 'Bearer ' + authStore.token,
@@ -355,7 +357,7 @@ export const useReservationStore = defineStore('reservation_name', () => {
       } else {
         // Actualiza una única reserva
         const res = await axios({
-          url: `/reservations/1/${user}/${res_id}`,
+          url: `/reservations/${proj_id}/${user}/${res_id}`,
           method: 'PUT',
           headers: {
             Authorization: 'Bearer ' + authStore.token,
@@ -385,7 +387,7 @@ export const useReservationStore = defineStore('reservation_name', () => {
     try {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token;
       const res = await axios({
-        url: `/reservations/1/${user}/${res_id}`,
+        url: `/reservations/${proj_id}/${user}/${res_id}`,
         method: 'DELETE',
         headers: {
           Authorization: 'Bearer ' + authStore.token

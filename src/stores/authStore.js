@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('user', () => {
       use_photo.value = res.data.data.use_photo
       authUser.value = res.data.data;
       project_id.value = res.data.data.proj_id;
-      console.log(res.data)
+      
      
 
       if (acc_administrator.value === 0) {
@@ -46,17 +46,18 @@ export const useAuthStore = defineStore('user', () => {
       }
 
       localStorage.setItem('Accept', token.value);
-      localStorage.setItem('img', use_photo.value);
 
       try {
 
         const hashedDoct = CryptoJS.SHA256(per_document.value).toString();
         const encryptedId = CryptoJS.AES.encrypt(String(use_id.value), secretKey).toString();
         const encryptedType = CryptoJS.AES.encrypt(String(acc_administrator.value), secretKey).toString();
+        const encryptedProj = CryptoJS.AES.encrypt(String(project_id.value), secretKey).toString();
         localStorage.setItem('doct', hashedDoct);
         localStorage.setItem('id', encryptedId);
         localStorage.setItem('pass', hashedPassword);
         localStorage.setItem('type', encryptedType);
+        localStorage.setItem('proj', encryptedProj);
         //console.log(hashedPassword)
       } catch (error) {
         // console.error('Error al cifrar y almacenar datos en localStorage:', error);
@@ -124,6 +125,7 @@ export const useAuthStore = defineStore('user', () => {
     localStorage.removeItem('type');
     localStorage.removeItem('pass');
     localStorage.removeItem('doct');
+    localStorage.removeItem('proj');
 
   }
 
