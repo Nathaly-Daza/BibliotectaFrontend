@@ -36,31 +36,31 @@ export const useAuthStore = defineStore('user', () => {
       use_photo.value = res.data.data.use_photo
       authUser.value = res.data.data;
       project_id.value = res.data.data.proj_id;
-
+      console.log(res.data)
      
 
-      // if (acc_administrator.value === 0) {
-      //   logout(res.data.data.use_id)
-      //   showSwalAlert(null, t('errors.accessDenied'), 'error');
-      //   return;
-      // }
+      if (acc_administrator.value === 0) {
+        logout(res.data.data.use_id)
+        showSwalAlert(null, t('errors.accessDenied'), 'error');
+        return;
+      }
 
-      // localStorage.setItem('Accept', token.value);
-      // localStorage.setItem('img', use_photo.value);
+      localStorage.setItem('Accept', token.value);
+      localStorage.setItem('img', use_photo.value);
 
-      // try {
+      try {
 
-      //   const hashedDoct = CryptoJS.SHA256(per_document.value).toString();
-      //   const encryptedId = CryptoJS.AES.encrypt(String(use_id.value), secretKey).toString();
-      //   const encryptedType = CryptoJS.AES.encrypt(String(acc_administrator.value), secretKey).toString();
-      //   localStorage.setItem('doct', hashedDoct);
-      //   localStorage.setItem('id', encryptedId);
-      //   localStorage.setItem('pass', hashedPassword);
-      //   localStorage.setItem('type', encryptedType);
-      //   //console.log(hashedPassword)
-      // } catch (error) {
-      //   // console.error('Error al cifrar y almacenar datos en localStorage:', error);
-      //   }
+        const hashedDoct = CryptoJS.SHA256(per_document.value).toString();
+        const encryptedId = CryptoJS.AES.encrypt(String(use_id.value), secretKey).toString();
+        const encryptedType = CryptoJS.AES.encrypt(String(acc_administrator.value), secretKey).toString();
+        localStorage.setItem('doct', hashedDoct);
+        localStorage.setItem('id', encryptedId);
+        localStorage.setItem('pass', hashedPassword);
+        localStorage.setItem('type', encryptedType);
+        //console.log(hashedPassword)
+      } catch (error) {
+        // console.error('Error al cifrar y almacenar datos en localStorage:', error);
+        }
         
     } catch (error) {
       // console.log(error.response.data.message)
@@ -137,8 +137,7 @@ export const useAuthStore = defineStore('user', () => {
           use_mail: email,
         }
       });
-      //console.log(res.data)
-      //console.log(email)
+  
       router.push('/resetPassword')
       handleResponse(
         res,
