@@ -230,6 +230,12 @@
       "invalidFormat": "The e-mail format is invalid",
       "institutional": "The e-mail must be institutional with only letters"
     },
+    "recurringReservation": {
+      "recurrenceTypeRequired": "Recurrence type is required.",
+      "recurrenceEndDateRequired": "End date for recurrence is required.",
+      "recurrenceEndDateInvalid": "The end date for recurrence must be after the current date.",
+      "recurrenceTypeInvalid": "The selected recurrence type is invalid."
+    },
     "nameRequired": "Name Required",
     "nameInvalid": "Name must be between 5 and 100 alphabetic characters.", 
     "nameProfInvalid": "Name must be between 3 and 100 alphabetic characters.", 
@@ -245,7 +251,9 @@
     "Update" : "Successfully updated",
     "titleSuccess" : "Reserve  for the day: ",
     "changePasswordSuccess": "Password has been changed successfully",
-    "mailSuccess":"A verification code was sent to your email"
+    "mailSuccess":"A verification code was sent to your email",
+    "recurringReservationCreated": "Recurring reservation created successfully.",
+    "recurringReservationUpdated": "Recurring reservation updated successfully."
   },
   "cancel": {
     "title": "Are you sure you want to cancel this reservation?",

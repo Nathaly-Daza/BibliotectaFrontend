@@ -298,16 +298,22 @@ const refreshReservationData = async () => {
 const validateRecurringWrapper = () => {
   if (isRecurring.value) {
     const errors = {};
+
+    // Validación del tipo de recurrencia
     if (!recurrenceType.value) {
-      errors.recurrenceType = t('validations.recurrenceTypeRequired');
+      errors.recurrenceType = t('validations.recurringReservation.recurrenceTypeRequired');
     }
+
+    // Validación de la fecha de finalización de la recurrencia
     if (!recurrenceEndDate.value || recurrenceEndDate.value <= res_date.value) {
-      errors.recurrenceEndDate = t('validations.invalidRecurrenceEndDate');
+      errors.recurrenceEndDate = t('validations.recurringReservation.recurrenceEndDateInvalid');
     }
+
     return errors;
   }
   return {};
 };
+
 
 const errors = computed(() => {
   const baseErrors = validateNameWrapper();

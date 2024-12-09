@@ -230,6 +230,12 @@
       "invalidFormat": "El formato de correo es inválido",
       "institutional": "El correo debe ser institucional con sólo letras"
     },
+    "recurringReservation": {
+      "recurrenceTypeRequired": "El tipo de recurrencia es obligatorio.",
+      "recurrenceEndDateRequired": "La fecha de finalización de la recurrencia es obligatoria.",
+      "recurrenceEndDateInvalid": "La fecha de finalización de la recurrencia debe ser posterior a la fecha actual.",
+      "recurrenceTypeInvalid": "El tipo de recurrencia seleccionado no es válido."
+    },
 "nameRequired":"Nombre Requerido",
 "nameInvalid": "Nombre debe tener entre 5 y 100 caracteres.",
 "nameProfInvalid": "Nombre debe tener entre 3 y 100 caracteres.",
@@ -245,7 +251,9 @@
   "Update" : "Se actualizo correctamente",
   "titleSuccess": "Reserva para el día: ",
   "changePasswordSuccess": "La contraseña ha sido cambiada exitosamente",
-  "mailSuccess":"Se envio a tu correo un código de verificación"
+  "mailSuccess":"Se envio a tu correo un código de verificación",
+  "recurringReservationCreated": "Reserva recurrente creada exitosamente.",
+  "recurringReservationUpdated": "Reserva recurrente actualizada exitosamente."
 },
 "cancel": {
   "title": "¿Estas seguro que quieres cancelar esta reservación?",
