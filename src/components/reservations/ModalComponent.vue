@@ -31,6 +31,34 @@
                   <div v-if="errors['res_date']" class="text-danger">{{ errors['res_date'] }}</div>
                 </div>
               </div>
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="isRecurring" v-model="isRecurring">
+                    <label class="form-check-label" for="isRecurring">
+                      {{ $t('forms.recurringReservation') }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="isRecurring" class="row mt-3">
+                <div class="col-md-6">
+                  <label for="recurrenceType" class="form-label">{{ $t('forms.recurrenceType') }}</label>
+                  <select id="recurrenceType" class="form-select" v-model="recurrenceType">
+                    <option value="weekly">{{ $t('forms.weekly') }}</option>
+                    <option value="monthly">{{ $t('forms.monthly') }}</option>
+                  </select>
+                  <div v-if="errors['recurrenceType']" class="text-danger">{{ errors['recurrenceType'] }}</div>
+                </div>
+                <div class="col-md-6">
+                  <label for="recurrenceEndDate" class="form-label">{{ $t('forms.recurrenceEndDate') }}</label>
+                  <input type="date" id="recurrenceEndDate" class="form-control" v-model="recurrenceEndDate">
+                  <div v-if="errors['recurrenceEndDate']" class="text-danger">{{ errors['recurrenceEndDate'] }}</div>
+                </div>
+            </div>
+
+
               <div class="row">
                 <div class="mb-3 col-md-6">
                   <label for="exampleInputStart" class="form-label">{{ $t('forms.reservationStart') }}</label>
@@ -74,7 +102,6 @@
               </div>
             </form>
           </div>
-
         </div>
       </div>
     </div>
@@ -101,10 +128,13 @@ const selectedUserId = ref('');
 const spa_name = ref('');
 const res_start = ref('');
 const res_end = ref('');
-const dateTimeErrorMessage = ref('');
+//const dateTimeErrorMessage = ref('');
 const UserItems = ref([]);
 let loading = ref(false)
 const loadingButton = ref(false);
+const isRecurring = ref(false); // Controla si la reserva es recurrente
+const recurrenceType = ref(''); // Tipo de recurrencia: "weekly" o "monthly"
+const recurrenceEndDate = ref(''); // Fecha límite de la recurrencia
 
 
 
@@ -118,14 +148,17 @@ const validateNameWrapper = () => {
     { name: 'res_start', value: res_start.value },
     { name: 'res_end', value: res_end.value },
     { name: 'spa_name', value: spa_name.value },
+    { name: 'isRecurring', value: isRecurring.value },
+    { name: 'recurrenceType', value: recurrenceType.value },
+    { name: 'recurrenceEndDate', value: recurrenceEndDate.value },
   ];
 
   return validateFields(fields, t('validations.inputRequired'));
 }
-const errors = computed(() => {
+/*const errors = computed(() => {
   return validateNameWrapper()
 
-})
+})*/
 
 const validateTimeWrapper = () => {
   const startTime = new Date(`2000-01-01T${res_start.value}`);
@@ -169,39 +202,80 @@ const updateSelectedUserId = (event) => {
   }
 };
 const handleSubmitReservation = async () => {
-  
-
   if (Object.keys(errors.value).length > 0 || timeErrorMessage.value || dateErrorMessage.value) {
     return;
   }
- 
+
   try {
     loadingButton.value = true;
-    //const secretKey = 'TuClaveSecreta';
-    //const user = CryptoJS.AES.decrypt(localStorage.getItem('id'), secretKey).toString(CryptoJS.enc.Utf8);
-    await reservationStore.registerReservation(res_date.value, res_start.value, res_end.value, spa_name.value, parseInt(selectedUserId.value), parseInt(selectedUserAcc.value));
-     loadingButton.value = false;
-     //console.log(res_date.value, res_start.value, res_end.value, res_typ_name.value, spa_name.value, selectedUserId.value, selectedUserAcc.value);
+    await reservationStore.registerReservation(
+      res_date.value,
+      res_start.value,
+      res_end.value,
+      spa_name.value,
+      parseInt(selectedUserId.value),
+      parseInt(selectedUserAcc.value),
+      isRecurring.value,
+      isRecurring.value ? recurrenceType.value : null,
+      isRecurring.value ? recurrenceEndDate.value : null,
+    );
+    loadingButton.value = false;
+
+    // Limpiar el formulario
     selectedUserId.value = '';
-    selectedUser.value = '';
     res_date.value = '';
     res_start.value = '';
     res_end.value = '';
     spa_name.value = '';
-    selectedUserId.value = '';
-
-    // Limpiar mensajes de error
-    timeErrorMessage.value = '';
-    dateErrorMessage.value = '';
-    dateTimeErrorMessage.value = '';
-    
-
+    isRecurring.value = false;
+    recurrenceType.value = '';
+    recurrenceEndDate.value = '';
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
-   refreshReservationData()
-  
+
+  refreshReservationData();
 };
+/* const handleSubmitReservation = async () => {
+  // Validar el formulario antes de enviar
+  if (Object.keys(errors.value).length > 0 || timeErrorMessage.value || dateErrorMessage.value) {
+    return;
+  }
+
+  try {
+    loadingButton.value = true;
+
+    // Datos para la reserva
+    const reservationData = {
+      res_date: res_date.value,
+      res_start: res_start.value,
+      res_end: res_end.value,
+      spa_id: parseInt(spa_name.value),
+      use_id: parseInt(selectedUserId.value),
+      is_recurrent: isRecurring.value,
+      recurrence_type: isRecurring.value ? recurrenceType.value : null,
+      recurrence_end_date: isRecurring.value ? recurrenceEndDate.value : null,
+    };
+
+    // Enviar la reserva al backend
+    await reservationStore.registerReservation(reservationData);
+    loadingButton.value = false;
+
+    // Limpiar el formulario después de enviar
+    selectedUserId.value = '';
+    res_date.value = '';
+    res_start.value = '';
+    res_end.value = '';
+    spa_name.value = '';
+    isRecurring.value = false;
+    recurrenceType.value = '';
+    recurrenceEndDate.value = '';
+  } catch (error) {
+    console.error(error);
+  }
+
+  refreshReservationData();
+}; */
 
 const refreshReservationData = async () => {
   loading.value = true;
@@ -209,6 +283,37 @@ const refreshReservationData = async () => {
   await reservationStore.readReservation();
   loading.value = false;
 };
+/* const validateRecurringWrapper = () => {
+  if (isRecurring.value) {
+    if (!recurrenceType.value) {
+      return { recurrenceType: t('validations.recurrenceTypeRequired') };
+    }
+    if (!recurrenceEndDate.value || recurrenceEndDate.value <= res_date.value) {
+      return { recurrenceEndDate: t('validations.invalidRecurrenceEndDate') };
+    }
+  }
+  return {};
+}; */
+
+const validateRecurringWrapper = () => {
+  if (isRecurring.value) {
+    const errors = {};
+    if (!recurrenceType.value) {
+      errors.recurrenceType = t('validations.recurrenceTypeRequired');
+    }
+    if (!recurrenceEndDate.value || recurrenceEndDate.value <= res_date.value) {
+      errors.recurrenceEndDate = t('validations.invalidRecurrenceEndDate');
+    }
+    return errors;
+  }
+  return {};
+};
+
+const errors = computed(() => {
+  const baseErrors = validateNameWrapper();
+  const recurrenceErrors = validateRecurringWrapper();
+  return { ...baseErrors, ...recurrenceErrors };
+});
 
 </script>
 

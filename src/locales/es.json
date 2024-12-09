@@ -97,7 +97,12 @@
     "dateInitial":"Fecha Inicial",
     "dateEnd":"Fecha Final",
     "imagen": "Cargar imagen",
-    "quotas":"Cupos"
+    "quotas":"Cupos",
+    "recurringReservation": "Reserva recurrente",
+    "recurrenceType": "Tipo de recurrencia",
+    "recurrenceEndDate": "Fecha de finalización de recurrencia",
+    "weekly": "Semanal",
+    "monthly": "Mensual"
   },
   "buttons":{
     "send":"Enviar",

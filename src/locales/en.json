@@ -97,7 +97,12 @@
     "dateInitial": "Start Date",
     "dateEnd": "End Date",
     "imagen": "Upload image",
-    "quotas":"Quotas"
+    "quotas":"Quotas",
+    "recurringReservation": "Recurring Reservation",
+    "recurrenceType": "Recurrence Type",
+    "recurrenceEndDate": "Recurrence End Date",
+    "weekly": "Weekly",
+    "monthly": "Monthly"
   },
   "buttons": {
     "send": "Send",

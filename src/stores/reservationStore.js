@@ -14,10 +14,14 @@ export const useReservationStore = defineStore('reservation_name', () => {
   const reservationDate = ref([])
   const reservationReportDate = ref([])
   const reservationUsers = ref([])
-const { t } = useI18n()
+  const { t } = useI18n()
   const secretKey = 'TuClaveSecreta';
   const user = CryptoJS.AES.decrypt(localStorage.getItem('id'), secretKey).toString(CryptoJS.enc.Utf8);
   const acc_administrator = parseInt(CryptoJS.AES.decrypt(localStorage.getItem('type'), secretKey).toString(CryptoJS.enc.Utf8));
+  //const isRecurring = ref(false); // Indica si es una reserva recurrente
+  //const recurrenceType = ref(''); // Diario, semanal, mensual, etc.
+  //const recurrenceEndDate = ref(''); // Fecha límite de la recurrencia
+
 
   const readReservation = async () => {
     try {
@@ -158,7 +162,7 @@ const { t } = useI18n()
     }
   };
 
-  const registerReservation = async (res_date, res_start, res_end,  spa_id, use_id, acc_user) => {
+ /*  const registerReservation = async (res_date, res_start, res_end,  spa_id, use_id, acc_user) => {
     //console.log(res_typ_id)
     //console.log(spa_id)
     //console.log(use_id)
@@ -200,8 +204,93 @@ const { t } = useI18n()
       handleError(error);
       // console.log(error.response?.data || error)
     }
+  }; */
+  
+  const registerReservation = async (res_date, res_start, res_end, spa_id, use_id, acc_user, isRecurring = false, recurrenceType = '', recurrenceEndDate = '') => {
+    try {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token;
+  
+      if (isRecurring) {
+        // Generar las fechas de las reservas según el tipo de recurrencia
+        const recurrenceDates = generateRecurrenceDates(res_date, recurrenceType, recurrenceEndDate);
+  
+        // Crear todas las reservas recurrentes
+        for (const date of recurrenceDates) {
+          await axios({
+            url: `/reservations/1/${user}`,
+            method: 'POST',
+            headers: {
+              Authorization: 'Bearer ' + authStore.token,
+            },
+            data: {
+              res_date: date,
+              res_start: res_start,
+              res_end: res_end,
+              spa_id: spa_id,
+              use_id: use_id,
+              acc_administrator: acc_user,
+            },
+          });
+        }
+  
+        handleResponse(null, t('messageSuccess.RecurringSuccess'), t('messageSuccess.Success'), null, null);
+      } else {
+        // Crear una única reserva
+        const res = await axios({
+          url: `/reservations/1/${user}`,
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + authStore.token,
+          },
+          data: {
+            res_date: res_date,
+            res_start: res_start,
+            res_end: res_end,
+            spa_id: spa_id,
+            use_id: use_id,
+            acc_administrator: acc_user,
+          },
+        });
+  
+        handleResponse(res, t('messageSuccess.titleSuccess'), t('messageSuccess.Success'), null, null);
+      }
+  
+      readReservation(); // Actualiza la lista de reservas
+    } catch (error) {
+      handleError(error);
+    }
   };
-  const updateReservation = async (res_id, new_res_date, new_res_start, new_res_end, new_spa_id, new_use_id) => {
+  
+
+  const generateRecurrenceDates = (startDate, recurrenceType, endDate) => {
+    const dates = [];
+    const currentDate = new Date(startDate);
+    const end = new Date(endDate);
+  
+    while (currentDate <= end) {
+      dates.push(new Date(currentDate).toISOString().split('T')[0]); // Agrega la fecha en formato 'YYYY-MM-DD'
+  
+      // Incrementar la fecha según el tipo de recurrencia
+      switch (recurrenceType) {
+        case 'daily':
+          currentDate.setDate(currentDate.getDate() + 1);
+          break;
+        case 'weekly':
+          currentDate.setDate(currentDate.getDate() + 7);
+          break;
+        case 'monthly':
+          currentDate.setMonth(currentDate.getMonth() + 1);
+          break;
+        default:
+          throw new Error('Tipo de recurrencia no válido');
+      }
+    }
+  
+    return dates;
+  };
+  
+  
+ /*  const updateReservation = async (res_id, new_res_date, new_res_start, new_res_end, new_spa_id, new_use_id) => {
 
     try {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token;
@@ -234,7 +323,62 @@ const { t } = useI18n()
       // console.error(error.response?.data || error);
       handleError(error);
     }
+  }; */
+  
+  const updateReservation = async (res_id, new_res_date, new_res_start, new_res_end, new_spa_id, new_use_id, isRecurring = false, recurrenceType = '', recurrenceEndDate = '') => {
+    try {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + authStore.token;
+  
+      if (isRecurring) {
+        // Similar a registerReservation, actualiza todas las reservas recurrentes
+        const recurrenceDates = generateRecurrenceDates(new_res_date, recurrenceType, recurrenceEndDate);
+  
+        for (const date of recurrenceDates) {
+          await axios({
+            url: `/reservations/1/${user}/${res_id}`,
+            method: 'PUT',
+            headers: {
+              Authorization: 'Bearer ' + authStore.token,
+            },
+            data: {
+              res_date: date,
+              res_start: new_res_start,
+              res_end: new_res_end,
+              spa_id: new_spa_id,
+              use_id: new_use_id,
+              acc_administrator: acc_administrator,
+            },
+          });
+        }
+  
+        handleResponse(null, t('messageSuccess.RecurringUpdate'), t('messageSuccess.Success'), null, null);
+      } else {
+        // Actualiza una única reserva
+        const res = await axios({
+          url: `/reservations/1/${user}/${res_id}`,
+          method: 'PUT',
+          headers: {
+            Authorization: 'Bearer ' + authStore.token,
+          },
+          data: {
+            res_date: new_res_date,
+            res_start: new_res_start,
+            res_end: new_res_end,
+            spa_id: new_spa_id,
+            use_id: new_use_id,
+            acc_administrator: acc_administrator,
+          },
+        });
+  
+        handleResponse(res, t('messageSuccess.Update'), t('messageSuccess.Success'), null, null);
+      }
+    } catch (error) {
+      handleError(error);
+    }
   };
+  
+  
+  
   const cancelReservation = async (res_id) => {
 
     //console.log(res_id)
