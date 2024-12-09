@@ -9,11 +9,12 @@
   <div class="col-12 col-md-5 col-lg-5 mb-2 mb-md-0">
     <label for="professionalSelect" class="form-label">{{$t('forms.professional')}}</label>
     <select id="professionalSelect" v-model="selectedProfessional" class="form-select">
-      <option v-for="(profItem, index) in filteredProfessinalItems" :key="index" :value="profItem.prof_name">
-        {{ profItem.prof_name }}
+      <option v-for="(profItem, index) in professionalStore.professional" :key="index" :value="profItem.per_name">
+        {{ profItem.per_name }} {{ profItem.per_lastname }}
       </option>
     </select>
   </div>
+  
   <div class="col-12 col-md-5 col-lg-5 mb-2 mb-md-0">
     <label for="serviceSelect" class="form-label">{{$t('forms.reservationType')}}</label>
     <select id="serviceSelect" v-model="selectedService" class="form-select">
@@ -53,9 +54,6 @@ const selectedProfessional = ref("");
 const selectedService= ref("");
 const loading = ref(true);
 
-const filteredProfessinalItems = computed(() => {
-  return professionalStore.professional.filter(profItem => profItem.prof_status === 1);
-});
 const filteredServiceTypeItems = computed(() => {
   return serviceTypeStore.serviceType.filter(serItem => serItem.ser_typ_status === 1);
 });

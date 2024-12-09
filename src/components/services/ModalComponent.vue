@@ -10,20 +10,7 @@
           </div>
           <div class="modal-body">
             <form @submit.prevent="handleSubmitReservation">
-             <!-- <div class="row">
-                <div class="mb-3 col-md-12">
-                  <label for="exampleInputDate" class="form-label">{{ $t('forms.users') }}</label>
-                  <input type="text" list="users-list" id="exampleInputUser" name="users-list" class="form-control"
-                    v-model="selectedUser" @input="updateSelectedUserId" />
-                  <datalist id="users-list">
-                    <option v-for="item in UserItems" :key="item.use_id" :value="item.use_mail"
-                      :data-id="[item.use_id]">
-                    </option>
-                  </datalist>
-                  <div v-if="errors['use_id']" class="text-danger">{{ errors['use_id'] }}</div>
-                </div>
-              </div>-->
-
+          
               <div class="row">
                 <div class="mb-3 col-md-12">
                   <label for="exampleInputName" class="form-label">{{ $t('forms.name') }}</label>
@@ -66,9 +53,10 @@
                 <div class="mb-3 col-md-6">
                   <label for="exampleInputStatus" class="form-label">{{ $t('forms.professional') }}</label>
                   <select id="spaSelect" v-model="prof_name" class="form-select">
-                    <option v-for="(profItem, index) in filteredProfessinalItems" :key="index"
-                      :value="profItem.prof_id">
-                      {{ profItem.prof_name }}
+                    <option v-for="(profItem, index) in professionalStore.professional" :key="index"
+                      :value="profItem.use_id">
+                      {{ profItem.per_name }}
+                      {{ profItem.per_lastname }}
                     </option>
                   </select>
                   <div v-if="errors['prof_name']" class="text-danger">{{ errors['prof_name'] }}</div>
@@ -188,7 +176,9 @@ onMounted(async () => {
     UserItems.value = users.data;
 
     await serviceTypeStore.readServiceType();
-
+    await professionalStore.readProfessional();
+    
+    console.log( serviceStore.profesional)
 
 
   } catch (error) {
@@ -196,22 +186,10 @@ onMounted(async () => {
   }
 });
 
-const filteredProfessinalItems = computed(() => {
-  return professionalStore.professional.filter(profItem => profItem.prof_status === 1);
-});
 const filteredServiceTypeItems = computed(() => {
   return serviceTypeStore.serviceType.filter(serItem => serItem.ser_typ_status === 1);
 });
 
-// const updateSelectedUserId = (event) => {
-//   const selectedUserItem = UserItems.value.find(item => item.use_mail === event.target.value);
-//   if (selectedUserItem) {
-//     selectedUserId.value = selectedUserItem.use_id;
-//     selectedUserAcc.value = selectedUserItem.acceso_usuario;
-//   } else {
-//     selectedUserId.value = '';
-//   }
-// };
 
 const handleSubmitReservation = async () => {
 

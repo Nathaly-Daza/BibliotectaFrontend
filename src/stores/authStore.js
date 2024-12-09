@@ -14,6 +14,7 @@ export const useAuthStore = defineStore('user', () => {
   const per_document = ref()
   const use_photo = ref()
   const authUser = ref(null);
+  const project_id = ref(null);
   const { t } = useI18n()
   const API_URL = import.meta.env.VITE_GENERAL_URL
 
@@ -34,29 +35,32 @@ export const useAuthStore = defineStore('user', () => {
       per_document.value = res.data.data.per_document
       use_photo.value = res.data.data.use_photo
       authUser.value = res.data.data;
+      project_id.value = res.data.data.proj_id;
 
-      if (acc_administrator.value === 0) {
-        logout(res.data.data.use_id)
-        showSwalAlert(null, t('errors.accessDenied'), 'error');
-        return;
-      }
+     
 
-      localStorage.setItem('Accept', token.value);
-      localStorage.setItem('img', use_photo.value);
+      // if (acc_administrator.value === 0) {
+      //   logout(res.data.data.use_id)
+      //   showSwalAlert(null, t('errors.accessDenied'), 'error');
+      //   return;
+      // }
 
-      try {
+      // localStorage.setItem('Accept', token.value);
+      // localStorage.setItem('img', use_photo.value);
 
-        const hashedDoct = CryptoJS.SHA256(per_document.value).toString();
-        const encryptedId = CryptoJS.AES.encrypt(String(use_id.value), secretKey).toString();
-        const encryptedType = CryptoJS.AES.encrypt(String(acc_administrator.value), secretKey).toString();
-        localStorage.setItem('doct', hashedDoct);
-        localStorage.setItem('id', encryptedId);
-        localStorage.setItem('pass', hashedPassword);
-        localStorage.setItem('type', encryptedType);
-        //console.log(hashedPassword)
-      } catch (error) {
-        // console.error('Error al cifrar y almacenar datos en localStorage:', error);
-        }
+      // try {
+
+      //   const hashedDoct = CryptoJS.SHA256(per_document.value).toString();
+      //   const encryptedId = CryptoJS.AES.encrypt(String(use_id.value), secretKey).toString();
+      //   const encryptedType = CryptoJS.AES.encrypt(String(acc_administrator.value), secretKey).toString();
+      //   localStorage.setItem('doct', hashedDoct);
+      //   localStorage.setItem('id', encryptedId);
+      //   localStorage.setItem('pass', hashedPassword);
+      //   localStorage.setItem('type', encryptedType);
+      //   //console.log(hashedPassword)
+      // } catch (error) {
+      //   // console.error('Error al cifrar y almacenar datos en localStorage:', error);
+      //   }
         
     } catch (error) {
       // console.log(error.response.data.message)
@@ -214,6 +218,7 @@ export const useAuthStore = defineStore('user', () => {
   return {
     token,
     use_photo,
+    project_id,
     access,
     logout,
     mail,

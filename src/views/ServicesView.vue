@@ -115,7 +115,7 @@
                         <div v-show="selectedOption == 'profesional'" class="m-2">
                           <label for="exampleInputStatus" class="form-label">{{ $t("forms.professional") }}:</label>
                           <select id="spaSelect" v-model="selectedService" class="form-control">
-                            <option v-for="(profItem, index) in professionalStore.professional" :key="index" :value="profItem.prof_id" >{{ profItem.prof_name }}</option>
+                            <option v-for="(profItem, index) in professionalStore.professional" :key="index" :value="profItem.use_id" >{{ profItem.per_name }} {{ profItem.per_lastname }}</option>
                           </select>
                         </div>
                         <div v-show="selectedOption == 'rangoFecha'" class="m-2">
@@ -215,7 +215,7 @@ const exportPDF = async () => {
     //console.log(datas)
   } else if (selectedOption.value === "profesional") {
     if (selectedService.value) {
-      column = "prof_id";
+      column = "use_id";
       const profesional = await serviceStore.readReportService(
         column,
         selectedService.value
