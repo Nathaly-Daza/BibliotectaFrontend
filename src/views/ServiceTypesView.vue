@@ -28,7 +28,7 @@
       <div class="card-body">
         <!--aqui va el datatable-->
         <TableComponent></TableComponent>
-        <ModalComponent></ModalComponent>
+        <ModalComponent :edit="false"></ModalComponent>
       </div>
     </div>
   </div>

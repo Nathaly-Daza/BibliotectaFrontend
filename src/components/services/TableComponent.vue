@@ -37,7 +37,7 @@
               <td>{{ item.ser_quotas -
                item.ser_register }}</td>
               <td>{{ item.ser_typ_name }}</td>
-              <td>{{ item.prof_name }}</td>
+              <td>{{ item.per_name }}  {{ item.per_lastname }}</td>
               <td>{{ item.ser_status === 1 ? "Activa" : "Cancelada" }}</td>
             </tr>
           </tbody>
@@ -61,6 +61,7 @@ const services = ref([]);
 onMounted(async () => {
   loading.value = true
   await serviceStore.readService();
+  console.log(await serviceStore.readService())
   loading.value = false;
 });
 
@@ -86,7 +87,7 @@ const filter = computed(() => {
     const matchesStart = item.ser_start ? item.ser_start.toString().toLowerCase().includes(lowerSearchTerm) : false;
     const matchesEnd = item.ser_end.toString().toLowerCase().includes(lowerSearchTerm)
     const matchesQuotas= item.ser_quotas.toString().toLowerCase().includes(lowerSearchTerm)
-    const matchesSpaName = item.prof_name.toLowerCase().includes(lowerSearchTerm)
+    const matchesSpaName = item.per_name.toLowerCase().includes(lowerSearchTerm)
     const matchesTypeName = item.ser_typ_name.toLowerCase().includes(lowerSearchTerm)
     // Verificar si el estado del elemento coincide con la búsqueda
     const matchesStatus = item.ser_status === 0 && "cancelada".includes(lowerSearchTerm);

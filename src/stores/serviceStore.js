@@ -39,7 +39,8 @@ export const useServiceStore = defineStore('serviceStore', () => {
           ser_quotas: item.ser_quotas,
           ser_register: item['No. inscripciones'],
           ser_typ_name: item.ser_typ_name,
-          prof_name: item.prof_name,
+          per_name: item.per_name,
+          per_lastname: item.per_lastname,
           ser_status: item.ser_status,
           
         };
@@ -141,7 +142,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
           ser_date: ser_date,
           ser_start: ser_start,
           ser_end: ser_end,
-          prof_id: prof_id,
+          use_id: prof_id,
           ser_typ_id: ser_typ_id,
           ser_name: ser_name,
           ser_quotas: ser_quotas,
@@ -181,7 +182,7 @@ export const useServiceStore = defineStore('serviceStore', () => {
           ser_date: new_ser_date,
           ser_start: new_ser_start,
           ser_end: new_ser_end,
-          prof_id: new_prof_id,
+          use_id: new_prof_id,
           ser_quotas: new_ser_quotas,
           ser_typ_id: new_ser_typ_id,
           

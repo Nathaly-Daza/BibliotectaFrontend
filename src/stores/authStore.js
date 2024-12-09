@@ -14,6 +14,7 @@ export const useAuthStore = defineStore('user', () => {
   const per_document = ref()
   const use_photo = ref()
   const authUser = ref(null);
+  const project_id = ref(null);
   const { t } = useI18n()
   const API_URL = import.meta.env.VITE_GENERAL_URL
 
@@ -34,6 +35,9 @@ export const useAuthStore = defineStore('user', () => {
       per_document.value = res.data.data.per_document
       use_photo.value = res.data.data.use_photo
       authUser.value = res.data.data;
+      project_id.value = res.data.data.proj_id;
+      console.log(res.data)
+     
 
       if (acc_administrator.value === 0) {
         logout(res.data.data.use_id)
@@ -133,8 +137,7 @@ export const useAuthStore = defineStore('user', () => {
           use_mail: email,
         }
       });
-      //console.log(res.data)
-      //console.log(email)
+  
       router.push('/resetPassword')
       handleResponse(
         res,
@@ -214,6 +217,7 @@ export const useAuthStore = defineStore('user', () => {
   return {
     token,
     use_photo,
+    project_id,
     access,
     logout,
     mail,

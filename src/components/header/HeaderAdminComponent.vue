@@ -48,11 +48,7 @@
             {{ $t('titles.services') }}
           </div>
         </RouterLink>
-        <RouterLink to="/professional" @click="closeMenu" active-class="active" class="side-btn">
-          <div class="link-container"><i class="bi bi-person-standing"></i>
-            {{ $t('titles.professional') }}
-          </div>
-        </RouterLink>
+        
         
         <button class="side-log text-start" @click="logoutUser"><i
             class="ri-logout-box-r-fill"></i>{{ $t('buttons.logout') }}</button>

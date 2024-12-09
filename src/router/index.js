@@ -87,16 +87,7 @@ const router = createRouter({
           meta: {
             auth: true
           },
-        },
-        {
-          path: '/professional',
-          name: 'byprofessonal',
-          component: () => import('../views/ProfessionalView.vue'),
-          meta: {
-            auth: true
-          },
         }
-
 
       ]
 
@@ -158,5 +149,55 @@ router.beforeEach(async (to, from, next) => {
   // Permitir el acceso a rutas públicas
   return next();
 });
+
+// router.beforeEach(async (to, from, next) => {
+//   const requiredAuth = to.meta.auth;
+//   const UserStore = useAuthStore();
+
+//   console.log(UserStore.project_id)
+
+//   const localStorageToken = localStorage.getItem("Accept");
+//   const localStoragePassword = localStorage.getItem('pass');
+//   const localStorageDocument = localStorage.getItem('doct');
+// //const localStorageUser = localStorage.getItem("id");
+
+//   if (localStorageToken) {
+//     UserStore.token = localStorageToken;
+//   }
+
+//   if (UserStore.token) {
+//     if (UserStore.token && to.name === 'login') {
+//       return next("/reservations");
+//     }
+
+//     const secretKey = 'TuClaveSecreta';
+//     const acc_administrator = CryptoJS.AES.decrypt(localStorage.getItem('type'), secretKey).toString(CryptoJS.enc.Utf8);
+
+//     // Acceso para administradores
+//     if (acc_administrator === '1') {
+//       return next();
+//     }
+
+//     // Validar si el usuario debe cambiar su contraseña
+//     if (localStoragePassword === localStorageDocument) {
+//       if (to.path !== '/firstPassword') {
+//         return next("/firstPassword");
+//       } else {
+//         return next();
+//       }
+//     }
+
+   
+//   }
+
+//   // Si la ruta requiere autenticación, redirigir al inicio de sesión
+//   if (requiredAuth) {
+//     return next("/");
+//   }
+
+//   // Permitir acceso a rutas públicas
+//   return next();
+// });
+
 
 export default router
