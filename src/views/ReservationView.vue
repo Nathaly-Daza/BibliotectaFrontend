@@ -12,12 +12,14 @@
               <i class="ri-file-excel-2-fill"></i> {{ $t('buttons.excel') }}
             </button>
           </div>
-          <div class="col-6 col-md-6 col-lg-6 text-end">
-
+          <div class="col-12 col-md-6 col-lg-6  text-end">
+            <button class="btn btn-success " type="button" ><i class="ri-download-2-line"></i> {{ $t('buttons.Import')}}</button>
             <!--button modal lcth-->
-            <button class="btn btn-custom " type="button" data-bs-toggle="modal"
+            <button class="btn btn-custom mx-2" type="button" data-bs-toggle="modal"
               data-bs-target="#RegistryReservation"><i class="ri-add-circle-line"></i> {{ $t('buttons.Registry')
               }}</button>
+
+              
           </div>
 
         </div>
@@ -235,7 +237,7 @@ onMounted(() => {
 .btn-custom {
   background-color: var(--red-color);
   color: #ffffff;
-  padding: 1rem 4rem;
+  padding: 0.5rem 2rem;
   font-size: 1.25rem;
 }
 
@@ -243,6 +245,17 @@ onMounted(() => {
   background-color: var(--color-background);
   color: var(--blue-color);
   border: 2px solid var(--red-color);
+}
+.btn-success {
+  color: #ffffff;
+  padding: 0.5rem 2rem;
+  font-size: 1.25rem;
+}
+
+.btn-success:hover {
+  background-color: var(--color-background);
+  color: var(--blue-color);
+  border: 2px solid #12903a;
 }
 
 @media (max-width: 630px) {

@@ -123,6 +123,7 @@
     "clearFilters":"Clear Filters",
     "excel": "Excel",
     "pdf":"PDF",
+    "Import":"Import",
     "loading":"Sending..."
   },
   "tables": {
