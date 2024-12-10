@@ -259,6 +259,29 @@ export const showSwalAlert = (
     confirmButtonText: 'OK'
   })
 }
+export const showCSVImportAlerts = (errors) => {
+  if (errors && errors.length > 0) {
+    // Unir los errores con salto de línea
+    const errorMessages = errors.join('\n');
+    
+    // Mostrar errores usando SweetAlert2
+    Swal.fire({
+      icon: 'error',
+      title: 'Errores encontrados',
+      text: errorMessages,
+      confirmButtonText: 'Aceptar'
+    });
+  } else {
+    // Si no hay errores, mostrar un mensaje genérico de error
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Hubo un problema al procesar el archivo CSV. Por favor, inténtalo nuevamente.',
+      confirmButtonText: 'Aceptar'
+    });
+  }
+};
+
 
 //Funcion de darle estilos a los botones
 export const swalWithBootstrapButtons = Swal.mixin({

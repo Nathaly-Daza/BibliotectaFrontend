@@ -61,7 +61,8 @@
     "management": "Management",
     "pdf": "Build PDF",
     "photo": "Change profile photo",
-    "inscription":"enrolled"
+    "inscription":"enrolled",
+    "import":"Import from CVS"
   },
   "forms": {
     "name": "Name",
@@ -75,7 +76,9 @@
       "accepted": "Accepted",
       "completed": "Completed",
       "onHold": "On Hold"
+
     },
+    "Import":"Load CSV or TXT file with reservations",
     "date": "Date",
     "hour": "Execution Time",
     "hourStart": "Start Time",
@@ -123,6 +126,7 @@
     "clearFilters":"Clear Filters",
     "excel": "Excel",
     "pdf":"PDF",
+    "Import":"Import",
     "loading":"Sending..."
   },
   "tables": {
@@ -217,7 +221,8 @@
       "active": "Active",
       "inactive": "Inactive"
     },
-    "note": "Accepted formats: .jpeg .png .jpg and maximum size of 2048KB."
+    "note": "Accepted formats: .jpeg .png .jpg and maximum size of 2048KB.",
+    "noteImport": "Accepted formats: .csv .txt and maximum size of 2048KB."
 
   },
   "validations": {
