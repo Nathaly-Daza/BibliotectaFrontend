@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
 import { useAuthStore } from './authStore.js'
-import {  handleError, handleResponse, showSwalAlert } from "../validations.js"
+import {  handleError, handleResponse, showSwalAlert, showCSVImportAlerts } from "../validations.js"
 import CryptoJS from 'crypto-js';
 import { useI18n } from 'vue-i18n'
 
@@ -422,9 +422,54 @@ export const useReservationStore = defineStore('reservation_name', () => {
     }
   };
 
+  
+  const ImportCVS = async (formData) => {
+    try {
+      // Agregar `acc_administrator` al FormData
+      formData.append('acc_administrator', acc_administrator);
+  
+      const res = await axios.post(`/spacesCVS/${proj_id}/${user}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: 'Bearer ' + authStore.token,
+        },
+      });
+  
+      // Procesar los mensajes de la respuesta
+      const messages = res.data.message;
+  
+      // Filtrar errores y éxito
+      const errors = messages.filter((msg) => msg.error).map((msg) => msg.error);
+      const success = messages.find((msg) => msg.message)?.message || 'No hay mensajes exitosos';
+  
+      console.log('Errores:', errors);
+      console.log('Éxito:', success);
+  
+      // Mostrar las alertas de éxito o error
+      if (errors.length > 0) {
+        // Si hay errores, mostrar alerta de errores
+        showCSVImportAlerts(errors);
+      } else {
+        // Si no hay errores, mostrar mensaje de éxito
+        handleResponse(
+          res,
+          null,
+          success,
+          t('errors.duplicateAlert'),
+          t('errors.pass')
+        )
+      }
+  
+    } catch (error) {
+      handleError(error.response || error);
+    }
+  };
+  
+
   readReservation()
 
   return {
+    ImportCVS,
     readReservation,
     readDateReservation,
     readReservationUser,
