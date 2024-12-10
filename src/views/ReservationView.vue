@@ -13,7 +13,8 @@
             </button>
           </div>
           <div class="col-12 col-md-6 col-lg-6  text-end">
-            <button class="btn btn-success " type="button" ><i class="ri-download-2-line"></i> {{ $t('buttons.Import')}}</button>
+            <button class="btn btn-success " type="button"  data-bs-toggle="modal"
+            data-bs-target="#importCVS" ><i class="ri-download-2-line"></i> {{ $t('buttons.Import')}}</button>
             <!--button modal lcth-->
             <button class="btn btn-custom mx-2" type="button" data-bs-toggle="modal"
               data-bs-target="#RegistryReservation"><i class="ri-add-circle-line"></i> {{ $t('buttons.Registry')
@@ -49,6 +50,7 @@
           </div>
         </div>
         <ModalComponent></ModalComponent>
+        <importCVS></importCVS>
 
         <div class="container p-5">
           <!-- Modal -->
@@ -122,6 +124,7 @@ import { ref, onMounted } from 'vue';
 import TableComponent from '../components/reservations/TableComponent.vue';
 import TableActiveComponent from '../components/reservations/TableActiveComponent.vue';
 import ModalComponent from '../components/reservations/ModalComponent.vue';
+import importCVS from '../components/reservations/ImportCVS.vue';
 import calendarComponent from '../components/reservations/calendarComponet.vue';
 
 import { exportReservationToCSV, exportReservationToPDF, showSwalAlert } from '../validations'

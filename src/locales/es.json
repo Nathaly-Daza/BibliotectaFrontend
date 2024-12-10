@@ -61,7 +61,9 @@
     "management": "Gestión",
     "pdf": "Generar PDF",
     "photo": "Cambiar foto de perfil",
-    "inscription":"Inscritos"
+    "inscription":"Inscritos",
+    "import":"Importar desde CSV"
+
   },
   "forms":{
     "name":"Nombre",
@@ -75,7 +77,9 @@
       "acepted":"Aceptado",
       "completed":"Completado",
       "onHold":"En espera"
+     
     },
+     "Import":"Importa reservas desde CSV O TXT",
     "date":"Fecha",
     "hour":"Hora de ejecución",
     "hourStart":"Hora de Inicio",
@@ -219,7 +223,8 @@
     "active": "Activo",
     "inactive": "In,activo"
   },
-  "note": "Formatos aceptados: .jpeg .png .jpg y tamaño máximo de 2048KB"
+  "note": "Formatos aceptados: .jpeg .png .jpg y tamaño máximo de 2048KB",
+  "noteImport": "Formatos aceptados: .csv .text  y tamaño máximo de 2048KB"
 },
 "validations": { 
   "password": {
