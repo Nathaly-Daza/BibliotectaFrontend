@@ -1,86 +1,93 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
-import CryptoJS from 'crypto-js';
-import { showSwalAlert, handleResponse } from "../validations.js"
+import CryptoJS from 'crypto-js'
+import { showSwalAlert, handleResponse } from '../validations.js'
 import router from '../router/index'
+import { useRefreshTokenStore } from './refreshToken.js'
 
 import { useI18n } from 'vue-i18n'
 
 export const useAuthStore = defineStore('user', () => {
+  const useRefreshTokenStore = useRefreshTokenStore()
   const token = ref()
   const use_id = ref()
   const acc_administrator = ref()
   const per_document = ref()
   const use_photo = ref()
-  const authUser = ref(null);
-  const project_id = ref(null);
+  const authUser = ref(null)
+  const project_id = ref(null)
   const { t } = useI18n()
   const API_URL = import.meta.env.VITE_GENERAL_URL
 
   const access = async (use_mail, use_password) => {
     try {
-      const hashedPassword = CryptoJS.SHA256(use_password).toString();
+      const hashedPassword = CryptoJS.SHA256(use_password).toString()
 
       const res = await axios.post('/login', {
         use_mail: use_mail,
         use_password: hashedPassword
-
       })
-      const secretKey = 'TuClaveSecreta';
+      const secretKey = 'TuClaveSecreta'
 
       token.value = res.data.data.token
       use_id.value = res.data.data.use_id
       acc_administrator.value = res.data.data.acc_administrator
       per_document.value = res.data.data.per_document
       use_photo.value = res.data.data.use_photo
-      authUser.value = res.data.data;
-      project_id.value = res.data.data.proj_id;
-      
-     
+      authUser.value = res.data.data
+      project_id.value = res.data.data.proj_id
 
       if (acc_administrator.value === 0) {
         logout(res.data.data.use_id)
-        showSwalAlert(null, t('errors.accessDenied'), 'error');
-        return;
+        showSwalAlert(null, t('errors.accessDenied'), 'error')
+        return
       }
 
-      localStorage.setItem('Accept', token.value);
+      localStorage.setItem('Accept', token.value)
 
       try {
-
-        const hashedDoct = CryptoJS.SHA256(per_document.value).toString();
-        const encryptedId = CryptoJS.AES.encrypt(String(use_id.value), secretKey).toString();
-        const encryptedType = CryptoJS.AES.encrypt(String(acc_administrator.value), secretKey).toString();
-        const encryptedProj = CryptoJS.AES.encrypt(String(project_id.value), secretKey).toString();
-        localStorage.setItem('doct', hashedDoct);
-        localStorage.setItem('id', encryptedId);
-        localStorage.setItem('pass', hashedPassword);
-        localStorage.setItem('type', encryptedType);
-        localStorage.setItem('proj', encryptedProj);
+        const hashedDoct = CryptoJS.SHA256(per_document.value).toString()
+        const encryptedId = CryptoJS.AES.encrypt(String(use_id.value), secretKey).toString()
+        const encryptedType = CryptoJS.AES.encrypt(
+          String(acc_administrator.value),
+          secretKey
+        ).toString()
+        const encryptedProj = CryptoJS.AES.encrypt(String(project_id.value), secretKey).toString()
+        localStorage.setItem('doct', hashedDoct)
+        localStorage.setItem('id', encryptedId)
+        localStorage.setItem('pass', hashedPassword)
+        localStorage.setItem('type', encryptedType)
+        localStorage.setItem('proj', encryptedProj)
+        const tokenExpiration = CryptoJS.AES.encrypt(
+          String(res.data.data.token_expiration),
+          secretKey
+        ).toString()
+        localStorage.setItem('TokenExpiration', tokenExpiration)
+        await useRefreshTokenStore.refreshToken()
         //console.log(hashedPassword)
       } catch (error) {
         // console.error('Error al cifrar y almacenar datos en localStorage:', error);
-        }
-        
+      }
     } catch (error) {
       // console.log(error.response.data.message)
-    
+
       if (error.response) {
         let messageToShow = error.response.data.message
 
         if (messageToShow.includes('Invalid email or password')) {
-          showSwalAlert(null, t('errors.login'), 'error');
+          showSwalAlert(null, t('errors.login'), 'error')
         }
         if (messageToShow.includes('This user already has an active session')) {
-          showSwalAlert(null, t('errors.accesActive'), 'error');
-
+          showSwalAlert(null, t('errors.accesActive'), 'error')
         }
         if (messageToShow.includes('has no access.')) {
-          showSwalAlert(null, use_mail + t('errors.accessDenied2'), 'error');
+          showSwalAlert(null, use_mail + t('errors.accessDenied2'), 'error')
         }
-        if (error.response.data.message.includes('The user who is trying to login does not exist')) {
-          showSwalAlert(null,  t('errors.login'), 'error');
+        if (
+          error.response.data.message.includes('The user who is trying to login does not exist')
+        ) {
+          showSwalAlert(null, t('errors.login'), 'error')
           return ''
         }
         // console.error('Error de solicitud:', error.response.data);
@@ -90,7 +97,7 @@ export const useAuthStore = defineStore('user', () => {
           icon: 'error',
           title: 'Error',
           text: t('errors.error')
-        });
+        })
         //console.error('Error inesperado:', error.message);
       }
     }
@@ -102,16 +109,15 @@ export const useAuthStore = defineStore('user', () => {
         url: '/logout',
         method: 'POST',
         data: {
-          use_id: use_id,
-        },
-
+          use_id: use_id
+        }
       })
       res.data
       //console.log(res.data)
     } catch (error) {
       // console.log(error)
     } finally {
-      resetStore();
+      resetStore()
     }
   }
 
@@ -119,16 +125,14 @@ export const useAuthStore = defineStore('user', () => {
     token.value = null
     use_photo.value = null
     authUser.value = null
-    localStorage.removeItem('Accept');
-    localStorage.removeItem('img');
-    localStorage.removeItem('id');
-    localStorage.removeItem('type');
-    localStorage.removeItem('pass');
-    localStorage.removeItem('doct');
-    localStorage.removeItem('proj');
-
+    localStorage.removeItem('Accept')
+    localStorage.removeItem('img')
+    localStorage.removeItem('id')
+    localStorage.removeItem('type')
+    localStorage.removeItem('pass')
+    localStorage.removeItem('doct')
+    localStorage.removeItem('proj')
   }
-
 
   const mail = async (email) => {
     try {
@@ -136,10 +140,10 @@ export const useAuthStore = defineStore('user', () => {
         url: `${API_URL}/send/email`,
         method: 'POST',
         data: {
-          use_mail: email,
+          use_mail: email
         }
-      });
-  
+      })
+
       router.push('/resetPassword')
       handleResponse(
         res,
@@ -149,13 +153,11 @@ export const useAuthStore = defineStore('user', () => {
         t('errors.errorMail')
       )
     } catch (error) {
-
       if (error.request) {
         let messageToShow = error.response.data.message
 
         if (messageToShow.includes('Attempt to read property "use_id"')) {
-          showSwalAlert(null, t('errors.userMail'), 'error');
-
+          showSwalAlert(null, t('errors.userMail'), 'error')
         }
         //console.error('Error de solicitud:', error.response.data);
       } else {
@@ -164,11 +166,11 @@ export const useAuthStore = defineStore('user', () => {
           icon: 'error',
           title: 'Error',
           text: t('errors.error')
-        });
+        })
         //console.error('Error inesperado:', error.message);
       }
     }
-  };
+  }
 
   const reset = async (newPassword, confirmPassword, code) => {
     try {
@@ -180,7 +182,7 @@ export const useAuthStore = defineStore('user', () => {
           password_confirmation: confirmPassword,
           res_pas_code: code
         }
-      });
+      })
       router.push('/')
 
       handleResponse(
@@ -197,11 +199,10 @@ export const useAuthStore = defineStore('user', () => {
         let messageToShow = error.response.data.message
 
         if (messageToShow.includes('Code does not match')) {
-          showSwalAlert(null, t('errors.resetCode'), 'error');
-
-        } if (messageToShow.includes('Invalid password confirmation')) {
-          showSwalAlert(null, t('errors.pass'), 'error');
-
+          showSwalAlert(null, t('errors.resetCode'), 'error')
+        }
+        if (messageToShow.includes('Invalid password confirmation')) {
+          showSwalAlert(null, t('errors.pass'), 'error')
         }
         //console.error('Error de solicitud:', error.response.data);
       } else {
@@ -210,11 +211,11 @@ export const useAuthStore = defineStore('user', () => {
           icon: 'error',
           title: 'Error',
           text: t('errors.error')
-        });
+        })
         //console.error('Error inesperado:', error.message);
       }
     }
-  };
+  }
 
   return {
     token,
@@ -225,5 +226,4 @@ export const useAuthStore = defineStore('user', () => {
     mail,
     reset
   }
-
 })
