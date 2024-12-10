@@ -231,6 +231,9 @@ export const useReservationStore = defineStore('reservation_name', () => {
               spa_id: spa_id,
               use_id: use_id,
               acc_administrator: acc_user,
+              isRecurring:isRecurring,
+              recurrenceType:recurrenceType,
+              recurrenceEndDate:recurrenceEndDate,
             },
           });
         }
@@ -251,6 +254,9 @@ export const useReservationStore = defineStore('reservation_name', () => {
             spa_id: spa_id,
             use_id: use_id,
             acc_administrator: acc_user,
+            isRecurring:isRecurring,
+            recurrenceType:recurrenceType,
+            recurrenceEndDate:recurrenceEndDate,
           },
         });
   
@@ -274,9 +280,9 @@ export const useReservationStore = defineStore('reservation_name', () => {
   
       // Incrementar la fecha según el tipo de recurrencia
       switch (recurrenceType) {
-        case 'daily':
+     /*   case 'daily':
           currentDate.setDate(currentDate.getDate() + 1);
-          break;
+          break;*/
         case 'weekly':
           currentDate.setDate(currentDate.getDate() + 7);
           break;
@@ -348,6 +354,9 @@ export const useReservationStore = defineStore('reservation_name', () => {
               res_end: new_res_end,
               spa_id: new_spa_id,
               use_id: new_use_id,
+              isRecurring:isRecurring,
+              recurrenceType:recurrenceType,
+              recurrenceEndDate:recurrenceEndDate,
               acc_administrator: acc_administrator,
             },
           });
@@ -368,6 +377,9 @@ export const useReservationStore = defineStore('reservation_name', () => {
             res_end: new_res_end,
             spa_id: new_spa_id,
             use_id: new_use_id,
+            isRecurring:isRecurring,
+            recurrenceType:recurrenceType,
+            recurrenceEndDate:recurrenceEndDate,
             acc_administrator: acc_administrator,
           },
         });
