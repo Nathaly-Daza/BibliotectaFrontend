@@ -4,12 +4,11 @@ import axios from 'axios'
 import CryptoJS from 'crypto-js'
 import { showSwalAlert, handleResponse } from '../validations.js'
 import router from '../router/index'
-import { useRefreshTokenStore } from './refreshToken.js'
 
 import { useI18n } from 'vue-i18n'
 
 export const useAuthStore = defineStore('user', () => {
-  const useRefreshTokenStore = useRefreshTokenStore()
+
   const token = ref()
   const use_id = ref()
   const acc_administrator = ref()
