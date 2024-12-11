@@ -62,109 +62,29 @@
     </div>
   </div>
 
-  <div class="container p-5">
-    <!-- Modal -->
-    <div class="modal fade border-primary" id="ModalServices" tabindex="-1" aria-hidden="true"
-      @data-bs-dismiss="resetEditForm">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-primary shadow-lg">
-          <div class="modal-header">
-            <h5 class="modal-title text-danger" id="exampleModalLabel">{{ $t('titles.editcategories') }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="editService">
-              <div class="row">
-                <div class="mb-3 col-md-12">
-                  <label for="exampleInputName" class="form-label">{{ $t('forms.name') }}</label>
-                  <input type="text" class="form-control" id="exampleInputName" v-model="ser_name" />
-                  
-                  <div v-if="errors['ser_name']" class="text-danger">{{ errors['ser_name'] }}</div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="mb-3 col-md-12">
-                  <label for="exampleInputQuotas" class="form-label">{{ $t('forms.quotas') }}</label>
-                  <input type="number" class="form-control" id="exampleInputQuotas" v-model="ser_quotas" />
-                  <div v-if="ser_quotas < 0" class="text-danger">{{$t('errors.numberQuotas')}}</div>
-                  <div v-if="errors['ser_quotas']" class="text-danger">{{ errors['ser_quotas'] }}</div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="mb-3 col-md-12">
-                  <label for="exampleInputDate" class="form-label">{{ $t('forms.date') }}</label>
-                  <input type="date" pattern="\d{4}-\{2}-\{2}" class="form-control" id="exampleInputDate"
-                    v-model="ser_date" />
-                  <div v-if="dateErrorMessage" class="text-danger">{{ dateErrorMessage }}</div>
-                  <div v-if="errors['ser_date']" class="text-danger">{{ errors['ser_date'] }}</div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="mb-3 col-md-6">
-                  <label for="exampleInputDate" class="form-label">{{ $t('forms.hourStart') }}</label>
-                  <input type="time" class="form-control" id="exampleInputDate" v-model="ser_start" />
-                  <div v-if="timeErrorMessage" class="text-danger">{{ timeErrorMessage }}</div>
-                  <div v-if="errors['ser_start']" class="text-danger">{{ errors['ser_start'] }}</div>
-                </div>
-                <div class="mb-3 col-md-6">
-                  <label for="exampleInputDate" class="form-label">{{ $t('forms.hourEnd') }}</label>
-                  <input type="time" class="form-control" id="exampleInputDate" v-model="ser_end" />
-                  <div v-if="timeErrorMessage" class="text-danger">{{ timeErrorMessage }}</div>
-                  <div v-if="errors['ser_end']" class="text-danger">{{ errors['ser_end'] }}</div>
+  
+  <ModalComponent
+  v-if="editing"
+  :ser_id="ser_id"
+  :ser_date="ser_date"
+  :ser_typ_name="ser_typ_name"
+  :prof_name="prof_name"
+  :ser_start="ser_start"
+  :ser_end="ser_end"
+  :ser_name="ser_name"
+  :ser_quotas="ser_quotas"
+  :dateErrorMessage="dateErrorMessage"
+  :edit="true"/>
 
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="mb-3 col-md-6">
-                  <label for="exampleInputStatus" class="form-label">{{ $t('forms.professional') }}</label>
-                  <select id="spaSelect" v-model="prof_name" class="form-select">
-                    <option v-for="(profItem, index) in filteredProfessinalItems" :key="index" :value="profItem.prof_id">
-                      {{ profItem.prof_name }}
-                    </option>
-                  </select>
-                  <div v-if="errors['prof_name']" class="text-danger">{{ errors['prof_name'] }}</div>
-                </div>
-                <div class="mb-3 col-md-6">
-                  <label for="exampleInputStatus" class="form-label">{{ $t('forms.reservationType') }}</label>
-                  <select id="spaSelect" v-model="ser_typ_name" class="form-select">
-                    <option v-for="(serTypItem, index) in filteredServiceTypeItems" :key="index" :value="serTypItem.ser_typ_id">
-                      {{ serTypItem.ser_typ_name }}
-                    </option>
-                  </select>
-                  <div v-if="errors['serTyp_name']" class="text-danger">{{ errors['serTyp_name'] }}</div>
-                </div>
-                </div>
-                <div class="row mt-4">
-                  <div class="col-md-12 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-custom fw-semibold" :disabled="ser_typ_name === ''">
-                      <span class="btn-content" v-if="!loadingButton">{{$t('buttons.send')}}</span>
-                      <span class="btn-content" v-else>
-                        <span class="spinner-border spinner-border-sm mr-2" aria-hidden="true" data-bs-dismiss="modal"></span>
-                        <span role="status"> {{ $t('buttons.loading') }}</span>
-                      </span>
-                    </button>
-                    <button type="button" class="btn btn-cancel ml-5 fw-semibold" data-bs-dismiss="modal">
-                      {{ $t('buttons.close') }}
-                    </button>
-                  </div>
-                </div>
-            </form>
-          </div>
-          
-        </div>
-      </div>
-    </div>
-  </div>
   <ModalInscription :data="data"></ModalInscription>
 </template>
 
 <script setup>
 import Swal from 'sweetalert2';
-import { validateDate, validateTime, validateFields } from '../../validations';
 import PaginationComponent from '../PaginationComponent.vue';
 import LoadingComponent from '../LoadingComponent.vue';
 import ModalInscription from '../services/ModalInscriptions.vue';
+import ModalComponent from './ModalComponent.vue';
 import { ref, watchEffect, onMounted, computed, watch } from "vue";
 import { useServiceStore } from "../../stores/serviceStore";
 import { useServiceTypeStore } from '../../stores/serviceTypesStore';
@@ -191,7 +111,6 @@ const editing = ref(false);
 const { t } = useI18n()
 const data = ref([])
 let loading = ref(false)
-const loadingButton = ref(false);
 
 const searchTerm = ref('')
 const currentPage = ref(1)
@@ -199,35 +118,6 @@ const itemsPerPage = 10
 
 
 
-//validaciones
-const validateNameWrapper = () => {
-  const fields = [
-  { name: 'ser_date', value: ser_date.value },
-  { name: 'ser_start', value: ser_start.value },
-  { name: 'ser_end', value: ser_end.value },
-  { name: 'spa_name', value: prof_name.value },
-  { name: 'ser_typ_name', value: ser_typ_name.value },
-  { name: 'ser_name', value: ser_name.value },
-  { name: 'ser_quotas', value: ser_quotas.value }
-
-];
-
-  return validateFields(fields, t('validations.inputRequired'));
-}
-const errors = computed(() => {
-  return validateNameWrapper()
-
-})
-
-const validateTimeWrapper = () => {
-  const startTime = new Date(`2000-01-01T${ser_start.value}`);
-  const endTime = new Date(`2000-01-01T${ser_end.value}`);
-  return validateTime(startTime, endTime, t('validations.hourAfterInvalid'), t('validations.hourIqualInvalid'));
-}
-const timeErrorMessage = computed(() => {
-  return validateTimeWrapper()
-
-})
 const read = async(item) => {
    
     data.value =await inscriptionStore.readInscription(item);
@@ -242,12 +132,7 @@ onMounted(async () => {
   loading.value = false;
 });
 
-const filteredProfessinalItems = computed(() => {
-  return professionalStore.professional.filter(profItem => profItem.prof_status === 1);
-});
-const filteredServiceTypeItems = computed(() => {
-  return serviceTypeStore.serviceType.filter(serItem => serItem.ser_typ_status === 1);
-});
+
 
 // Actualizamos las services cuando cambie el valor de serviceStore.service
 watchEffect(() => {
@@ -268,8 +153,8 @@ const prepareEditForm = (item) => {
   dateErrorMessage.value = '';
 
   // Busca el profesional seleccionado en professionalStore.professional
-  const selectedProfessional = professionalStore.professional.find(profItem => profItem.prof_name === item.Profesional);
-  prof_name.value = selectedProfessional ? selectedProfessional.prof_id : ''; // Asigna el id del profesional seleccionado
+  const selectedProfessional = professionalStore.professional.find(profItem =>`${profItem.per_name} ${profItem.per_lastname}` === item.Profesional);
+  prof_name.value = selectedProfessional ? selectedProfessional.use_id : ''; 
 
   // Busca el tipo de servicio seleccionado en serviceTypeStore.serviceType
   const selectedServiceType = serviceTypeStore.serviceType.find(serItem => serItem.ser_typ_name === item['Tipo Servicio']);
@@ -279,26 +164,6 @@ const prepareEditForm = (item) => {
   editing.value = true;
 };
 
-const editService = async () => {
-  
-//validaciones
-dateErrorMessage.value = validateDate(ser_date.value, t('validations.dateBeforeInvalid'));
-if (Object.keys(errors.value).length > 0 || timeErrorMessage.value || dateErrorMessage.value) {
-  // Mostrar mensajes de error si las validaciones no pasan
-  return;
-}
-try {
-  loadingButton.value = true; await serviceStore.updateService(ser_id.value, ser_date.value, ser_start.value, ser_end.value, prof_name.value,ser_typ_name.value,ser_name.value.toUpperCase(), ser_quotas.value);
-  loadingButton.value = false;
-  //console.log(ser_id.value,ser_date.value,ser_start.value,ser_end.value, ser_typ_name.value,prof_name.value,use_id.value);
-
-  editing.value = false;
- 
-} catch (error) {
-  console.error(error);
-}
-refreshReservationData();
-};
 
 //Busqueda
 const filter = computed(() => {

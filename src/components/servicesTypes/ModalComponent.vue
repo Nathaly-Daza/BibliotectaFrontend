@@ -1,12 +1,12 @@
 <template>
   <div class="container p-5">
     <!-- Modal -->
-    <div class="modal fade border-primary" id="registerTypeReservations" tabindex="-1"
+    <div class="modal fade border-primary" :id="props.edit == false ?'registerTypeReservations' : 'ModalServicesTypes'" tabindex="-1"
       aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-primary shadow-lg">
           <div class="modal-header">
-            <h5 class="modal-title text-danger" id="exampleModalLabel">{{ $t('titles.Registrycategories') }}</h5>
+            <h5 class="modal-title text-danger" id="exampleModalLabel">{{ props.edit == false ? $t('titles.Registrycategories') : $t('titles.editcategories') }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -45,18 +45,26 @@
 
 <script setup>
 
-import { ref, computed } from 'vue';
+import { ref, computed, defineProps, watchEffect } from 'vue';
 import { useServiceTypeStore } from '../../stores/serviceTypesStore';
 import { validateNameSer } from '../../validations';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
+const props = defineProps({
+  ser_typ_id: Number,
+  ser_typ_name: String,
+  edit: Boolean,
+});
+
+
 
 const serviceTypesStore = useServiceTypeStore();
-const ser_typ_name = ref('');
+const ser_typ_name = ref(props.ser_typ_name ||'');
 
 const loading = ref(false)
 const loadingButton = ref(false);
+const editing = ref(false);
 
 const hasInteracted = ref(false); 
 
@@ -74,13 +82,17 @@ const handleInput = () => {
   }
 };
 
-
+watchEffect(() => {
+  ser_typ_name.value = props.ser_typ_name || ''
+  editing.value = props.edit
+})
 
 const submitForm = async () => {
   hasInteracted.value = true; 
   if (nameError.value) {
     return;
   }
+  if(props.edit==false){
   try { 
     loadingButton.value = true
     await serviceTypesStore.registerServiceType(ser_typ_name.value.toUpperCase());
@@ -90,6 +102,20 @@ const submitForm = async () => {
 
   } catch (error) {
     console.log(error);
+  }
+  }else{
+    try {
+    loadingButton.value = true;
+     await serviceTypesStore.updateServiceType(props.ser_typ_id, ser_typ_name.value.toUpperCase());
+    loadingButton.value = false;
+    // Restablecer el estado de edición y actualizar los datos
+    editing.value = false;
+    
+    
+    refreshReservationData();
+  } catch (error) {
+    console.error(error);
+  }
   }
     refreshReservationData()
 };
