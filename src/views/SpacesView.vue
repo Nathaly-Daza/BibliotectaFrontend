@@ -28,7 +28,7 @@
         <!-- Aquí va el componente de la tabla -->
         <TableComponent></TableComponent>
         <!-- Aquí va el componente modal -->
-        <ModalComponent :edit="false"></ModalComponent>
+        <ModalComponent></ModalComponent>
       </div>
     </div>
   </div>

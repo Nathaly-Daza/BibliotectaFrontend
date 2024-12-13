@@ -1,11 +1,11 @@
 <template>
   <div class="container p-5">
     <!-- Modal -->
-    <div class="modal fade border-primary" :id=" props.edit==false ?'RegistryReservation' :'ModalServices'" tabindex="-1" aria-hidden="true">
+    <div class="modal fade border-primary" id="RegistryReservation" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-primary shadow-lg">
           <div class="modal-header">
-            <h5 class="modal-title text-danger" id="exampleModalLabel">{{ props.edit==false ? $t('titles.Registrycategories'): $t('titles.editcategories') }}</h5>
+            <h5 class="modal-title text-danger" id="exampleModalLabel">{{ $t('titles.Registrycategories') }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -103,25 +103,11 @@ import { useReservationStore } from '../../stores/reservationStore';
 import { useProfessionalStore } from '../../stores/professionalStore';
 import { useServiceTypeStore } from '../../stores/serviceTypesStore';
 
-import { ref, computed, onMounted, defineProps, watchEffect } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 //import CryptoJS from 'crypto-js';
-
-const props =defineProps({
-
-  ser_id:Number,
-    ser_name:String,
-    ser_quotas:Number,
-    ser_date:String,
-    prof_name:Number,
-    ser_typ_name:Number,
-    ser_start:String,
-    ser_end:String,
-    edit:Boolean
-
-})
 
 
 const professionalStore = useProfessionalStore();
@@ -130,17 +116,16 @@ const serviceTypeStore = useServiceTypeStore();
 const serviceStore = useServiceStore();
 const reservationStore = useReservationStore();
 
-const ser_date = ref(props.ser_date||'');
+const ser_date = ref('');
 const selectedUser = ref('');
 // const selectedUserAcc = ref('');
 // const selectedUserId = ref('');
-const ser_typ_name = ref(props.ser_typ_name||'');
-const prof_name = ref(props.prof_name||'');
-const ser_start = ref(props.ser_start||'');
-const ser_end = ref(props.ser_end||'');
-const ser_name= ref(props.ser_name||'')
-const ser_quotas = ref(props.ser_quotas||'')
-const editing = ref(false);
+const ser_typ_name = ref('');
+const prof_name = ref('');
+const ser_start = ref('');
+const ser_end = ref('');
+const ser_name= ref('')
+const ser_quotas = ref('')
 
 const UserItems = ref([]);
 let loading = ref(false)
@@ -179,10 +164,8 @@ const timeErrorMessage = computed(() => {
 })
 
 const validateDateWrapper = () => {
-  console.log(ser_date.value)
-
   return validateDate(ser_date.value, t('validations.dateBeforeInvalid'));
- } 
+}
 const dateErrorMessage = computed(() => {
   return validateDateWrapper()
 
@@ -195,6 +178,7 @@ onMounted(async () => {
     await serviceTypeStore.readServiceType();
     await professionalStore.readProfessional();
     
+    console.log( serviceStore.profesional)
 
 
   } catch (error) {
@@ -206,21 +190,11 @@ const filteredServiceTypeItems = computed(() => {
   return serviceTypeStore.serviceType.filter(serItem => serItem.ser_typ_status === 1);
 });
 
-watchEffect(() => {
-  ser_name.value = props.ser_name || ''
-  ser_date.value = props.ser_date || ''
-  prof_name.value = props.prof_name || ''
-  ser_typ_name.value = props.ser_typ_name || ''
-  ser_start.value = props.ser_start || ''
-  ser_end.value = props.ser_end || ''
-  editing.value = props.edit
-  console.log(props)
-})
+
 const handleSubmitReservation = async () => {
 
   if (Object.keys(errors.value).length > 0 || timeErrorMessage.value || dateErrorMessage.value) { return; }
   // Registrar la reserva
-  if(props.edit ==false){
   try {
     loadingButton.value = true;
     //const secretKey = 'TuClaveSecreta';
@@ -245,17 +219,6 @@ const handleSubmitReservation = async () => {
   } catch (error) {
     console.log(error);
   }
-}else{
-  try {
-  loadingButton.value = true; await serviceStore.updateService(props.ser_id, ser_date.value, ser_start.value, ser_end.value, prof_name.value,ser_typ_name.value,ser_name.value.toUpperCase(), ser_quotas.value);
-  loadingButton.value = false;
-
-  editing.value = false;
- 
-} catch (error) {
-  console.error(error);
-}
-}
   refreshReservationData();
 };
 

@@ -30,41 +30,73 @@
                 </div>
               </td>
               <td class="text-center">
-              <button 
-              @click="prepareEditForm(item)"
-                class="btn btn-outline-primary" 
-                data-bs-toggle="modal" 
-                data-bs-target="#modal" 
-                
-              >
-              <i class="ri-pencil-fill"></i> {{ $t('buttons.edit') }}
-            </button>
+                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal"
+                  @click="prepareEditForm(item)">
+                  <i class="ri-pencil-fill"></i> {{ $t('buttons.edit') }}
+                </button>
               </td>
-             
             </tr>
           </tbody>
         </table>
-        <ModalComponent 
-          :edit="true" 
-          :spa_name="spa_name" 
-          :spa_id="spa_id" 
-        />
         <PaginationComponent :currentPage="currentPage" :totalPages="totalPages" @changePage="handlePageChanged" />
       </div>
     </div>
+  </div>
+  <div class="container p-5">
+    <!-- Modal -->
+    <div class="modal fade border-primary" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-primary shadow-lg">
+          <div class="modal-header">
+            <h5 class="modal-title blue-color-text" id="exampleModalLabel1">{{ $t('titles.editservices') }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent="editSpace">
+              <div class="row">
 
-  </div> 
- 
+                <div class="mb-3 col-12">
+                  <label for="exampleInputName1" class="form-label">{{ $t('forms.name') }}</label>
+                  <input type="text" v-model="spa_name" class="form-control" id="exampleInputName1"
+                    aria-describedby="NameHelp" />
+                  <div v-if="nameError" class="text-danger">{{ nameError }}</div>
+
+                </div>
+
+
+              </div>
+              <div class="row mt-4">
+                <div class="col-md-12 d-flex justify-content-center">
+                  <button type="submit" class="btn btn-custom fw-semibold" :disabled="spa_name.trim() === ''|| nameError != ''" data-bs-dismiss="modal">
+                    <span class="btn-content" v-if="!loadingButton">{{ $t('buttons.send') }}</span>
+                    <span class="btn-content" v-else>
+                      <span class="spinner-border spinner-border-sm mr-2" aria-hidden="true"></span>
+                      <span role="status"> {{ $t('buttons.loading') }}</span>
+                    </span>
+                  </button>
+                  <button type="button" class="btn btn-cancel ml-5 fw-semibold" data-bs-dismiss="modal">
+                    {{ $t('buttons.close') }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 
 <script setup>
 import PaginationComponent from '../PaginationComponent.vue';
 import LoadingComponent from '../LoadingComponent.vue';
-import ModalComponent from './ModalComponent.vue';
 import { useSpaceStore } from '../../stores/spaceStore'
 import { ref, computed, onMounted, watch } from 'vue';
-
+import { validateName } from '../../validations';
+import { useI18n } from 'vue-i18n'
 
 
 const spaceStores = useSpaceStore();
@@ -75,12 +107,12 @@ const spa_status = ref("");
 const editing = ref(false);
 
 let loading = ref(false)
-
+let loadingButton = ref(false);
 
 const searchTerm = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 10
-
+const { t } = useI18n()
 onMounted(async () => {
   loading.value = true
   await spaceStores.readSpace()
@@ -119,14 +151,42 @@ watch(searchTerm, () => {
 });
 
 const prepareEditForm = (item) => {
-  if (item) {
-    spa_id.value = item.spa_id;  // Asigna solo el ID del elemento actual
-    spa_name.value = item.spa_name;  // Asigna solo el nombre del elemento actual
-    spa_status.value = item.spa_status;  // Asigna el estado del elemento actual
-    editing.value = true;
-  }
-};
+  spa_id.value = item.spa_id;
+  spa_name.value = item.spa_name;
+  spa_status.value = item.spa_status;
 
+  editing.value = true;
+  //console.log('Datos de espacio para editar:', spa_id.value, spa_name.value, spa_status.value);
+  // Emitir el evento personalizado para abrir el modal de edición con los datos
+
+};
+const validateNameWrapper = () => {
+  return validateName(spa_name.value, t('validations.nameInvalid'))
+}
+const nameError = computed(() => {
+  return validateNameWrapper()
+
+})
+
+const editSpace = async () => {
+
+  if (nameError.value) {
+    // Detener el envío de datos si hay errores
+    return;
+  }
+  try {
+    loadingButton.value = true
+    await spaceStores.updateSpace(spa_id.value, spa_name.value.toUpperCase());
+    loadingButton.value = false
+    editing.value = false;
+    
+
+
+  } catch (error) {
+    // console.error(error);
+  }
+  refreshReservationData();
+}
 
 const editStatus = async (spa_id) => {
   try {
