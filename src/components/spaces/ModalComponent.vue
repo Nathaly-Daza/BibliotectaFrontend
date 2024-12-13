@@ -1,12 +1,12 @@
 <template>
-  <div class="container p-5">
+  <div class="container ">
     <!-- Modal -->
-    <div class="modal fade border-primary" id="regystrySpaces" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal fade border-primary" :id="props.edit == false ?'regystrySpaces' : 'modal'" tabindex="-1" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-primary shadow-lg">
           <div class="modal-header">
-            <h5 class="modal-title text-danger" id="exampleModalLabel">{{ $t('titles.Registryservices') }}</h5>
+            <h5 class="modal-title text-danger" id="exampleModalLabel">{{ props.edit === false ? $t('titles.Registryservices') : $t('titles.editservices') }}            </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -44,15 +44,23 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed,watchEffect } from 'vue';
 import { useSpaceStore } from '../../stores/spaceStore';
+import { defineProps } from 'vue';
 import { validateName } from '../../validations';
 import { useI18n } from 'vue-i18n'
 
 
-const spaceStores = useSpaceStore();
-const spa_name = ref('');
+const props = defineProps({
+  spa_id: Number,
+  spa_name: String,
+  edit: Boolean,
+});
 
+
+const spaceStores = useSpaceStore();
+const spa_name = ref(props.spa_name ||'');
+const editing = ref(false);
 let loading = ref(false)
 const loadingButton = ref(false);
 const hasInteracted = ref(false); 
@@ -64,7 +72,7 @@ const { t } = useI18n()
 const validateNameWrapper = () => {
   return validateName(spa_name.value, t('validations.nameInvalid'))
 }
-const nameError = computed(() => {
+const nameError = computed(() => {console.log(props)
   return hasInteracted.value ? validateNameWrapper() : ''; 
 
 })
@@ -74,9 +82,27 @@ const handleInput = () => {
     hasInteracted.value = true; 
   }
 };
+watchEffect(() => {
+  spa_name.value = props.spa_name || ''
+  editing.value = props.edit
+})
 const submitForm = async () => {
   if (nameError.value) { return; }
-  try {
+  if(props.edit){
+    try {
+    loadingButton.value = true
+    await spaceStores.updateSpace(props.spa_id, spa_name.value.toUpperCase());
+    loadingButton.value = false
+    editing.value = false;
+    
+
+
+  } catch (error) {
+    // console.error(error);
+  }
+
+  }else{
+    try {
     if (!nameError.value) {
       loadingButton.value = true;
       await spaceStores.registerSpace(spa_name.value.toUpperCase()); // Usar spaceStore en lugar de spaceStores
@@ -88,6 +114,8 @@ const submitForm = async () => {
   } catch (error) {
     // console.log(error);
   }
+  }
+  
   refreshSpaceData()
 
 };

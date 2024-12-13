@@ -64,7 +64,7 @@
             <component :is="tab.component" v-if="activeTab === tab.name"></component>
           </div>
         </div>
-        <ModalComponent></ModalComponent>
+        <ModalComponent :edit="false"></ModalComponent>
 
         <div class="container p-5">
           <!-- Modal -->

@@ -42,74 +42,36 @@
           </tbody>
         </table>
         <PaginationComponent :currentPage="currentPage" :totalPages="totalPages" @changePage="handlePageChanged" />
+        <ModalComponent 
+          :edit="true" 
+          :ser_typ_name="ser_typ_name" 
+          :ser_typ_id="ser_typ_id" 
+        />
       </div>
     </div>
   </div>
-  <div class="container p-5">
-    <!-- Modal -->
-    <div class="modal fade border-primary" id="ModalServicesTypes" tabindex="-1" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-primary shadow-lg">
-          <div class="modal-header">
-            <h5 class="modal-title blue-color-text" id="exampleModalLabel1">{{ $t('titles.editcategories') }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent="editReservationType">
-              <div class="row">
-                <div class="mb-3 col-12">
-                  <label for="exampleInputName1" class="form-label">{{ $t('forms.name') }} </label>
-                  <input type="text" v-model="ser_typ_name" class="form-control" id="exampleInputName1"
-                    aria-describedby="NameHelp" />
-                  <div v-if="nameError" class="text-danger">{{ nameError }}</div>
 
-                </div>
-              </div>
-              <div class="row mt-4">
-                <div class="col-md-12 d-flex justify-content-center">
-                  <button type="submit" class="btn btn-custom fw-semibold" :disabled="ser_typ_name.trim() === '' || nameError != ''" data-bs-dismiss="modal">
-                    <span class="btn-content" v-if="!loadingButton">{{ $t('buttons.send') }}</span>
-                    <span class="btn-content" v-else>
-                      <span class="spinner-border spinner-border-sm mr-2" aria-hidden="true"></span>
-                      <span role="status"> {{ $t('buttons.loading') }}</span>
-                    </span>
-                  </button>
-                  <button type="button" class="btn btn-cancel ml-5 fw-semibold" data-bs-dismiss="modal">
-                    {{ $t('buttons.close') }}
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script setup>
 import PaginationComponent from '../PaginationComponent.vue';
 import LoadingComponent from '../LoadingComponent.vue';
+import ModalComponent from './ModalComponent.vue';
 import { useServiceTypeStore } from '../../stores/serviceTypesStore'
 import { ref, computed, onMounted, watch } from 'vue';
-import { validateNameSer } from '../../validations';
-import { useI18n } from 'vue-i18n'
 
 
 const serviceTypeStore = useServiceTypeStore();
 
 const ser_typ_name = ref("");
 const ser_typ_id = ref("");
-const editing = ref(false);
 const loading = ref(false);
-const loadingButton = ref(false);
+
 
 const searchTerm = ref('');
 const currentPage = ref(1);
 const itemsPerPage = 10;
-const { t } = useI18n()
+
 onMounted(async () => {
   loading.value = true;
   await serviceTypeStore.readServiceType();
@@ -149,34 +111,10 @@ watch(searchTerm, () => {
 const prepareEditForm = (item) => {
   ser_typ_id.value = item.ser_typ_id;
   ser_typ_name.value = item.ser_typ_name;
-  editing.value = true;
 
 };
 
-const validateNameWrapper = () => {
-  return validateNameSer(ser_typ_name.value, t('validations.nameInvalid'))
-}
-const nameError = computed(() => {
-  return validateNameWrapper()
 
-})
-
-const editReservationType = async () => {
-  // Verificar si hay errores de validación
-  if (nameError.value) { return;}
-  try {
-    loadingButton.value = true;
-     await serviceTypeStore.updateServiceType(ser_typ_id.value, ser_typ_name.value.toUpperCase());
-    loadingButton.value = false;
-    // Restablecer el estado de edición y actualizar los datos
-    editing.value = false;
-    
-    
-    refreshReservationData();
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 const editStatus = async (ser_typ_id) => {
   try {
