@@ -63,7 +63,7 @@ export const useAuthStore = defineStore('user', () => {
           secretKey
         ).toString()
         localStorage.setItem('TokenExpiration', tokenExpiration)
-        await useRefreshTokenStore.refreshToken()
+     
         //console.log(hashedPassword)
       } catch (error) {
         // console.error('Error al cifrar y almacenar datos en localStorage:', error);
@@ -117,6 +117,8 @@ export const useAuthStore = defineStore('user', () => {
       // console.log(error)
     } finally {
       resetStore()
+      router.push('/login'); 
+      window.location.reload();
     }
   }
 
@@ -124,13 +126,8 @@ export const useAuthStore = defineStore('user', () => {
     token.value = null
     use_photo.value = null
     authUser.value = null
-    localStorage.removeItem('Accept')
-    localStorage.removeItem('img')
-    localStorage.removeItem('id')
-    localStorage.removeItem('type')
-    localStorage.removeItem('pass')
-    localStorage.removeItem('doct')
-    localStorage.removeItem('proj')
+    project_id.value=null
+    localStorage.clear()
   }
 
   const mail = async (email) => {
