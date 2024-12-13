@@ -63,6 +63,7 @@ export const useAuthStore = defineStore('user', () => {
           secretKey
         ).toString()
         localStorage.setItem('TokenExpiration', tokenExpiration)
+        await useRefreshTokenStore.refreshToken()
         //console.log(hashedPassword)
       } catch (error) {
         // console.error('Error al cifrar y almacenar datos en localStorage:', error);
